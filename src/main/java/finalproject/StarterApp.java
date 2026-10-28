@@ -17,7 +17,7 @@ public class StarterApp extends Application {
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
-        Label titleLabel = new Label("CSSE220 Final Project");
+        Label titleLabel = new Label("CSSE220 Final Project - Debug Matthew");
         Label statusLabel = new Label("Starter app is ready.");
 
         // TODO 2: Add your first interactive control (button, text field, etc.).
