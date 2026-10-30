@@ -32,19 +32,22 @@ public class StarterApp extends Application {
         ground.setFill(Color.LIGHTGREEN);
 
         Button start = new Button("Integrate");
-        Button reset = new Button("Reset");
-        Button jump = new Button("jump");
+        Button reset = new Button("Clear Output");
+        Button jump = new Button("Flap");
         Label status = new Label("Ready");
         TextField textField = new TextField();
-        textField.setMaxWidth(900);
+        //textField.setMaxWidth(900);
+
+        VBox inputOutput = new VBox(textField);
+        inputOutput.setPadding(new Insets(12));
 
         start.setOnAction(event -> {
             String output = Integrate(textField.getText());
             System.out.println("calculated and found " + output);
-            //DisplayOutput(output,VBox);
+            DisplayOutput(output,inputOutput);
         });
 
-        Pane canvas = new Pane(sky, ground,textField);
+        Pane canvas = new Pane(sky, ground,inputOutput);
         canvas.setFocusTraversable(true);
         canvas.setOnMouseClicked(event -> canvas.requestFocus());
         canvas.setPrefSize(500, 300);
@@ -99,6 +102,12 @@ public class StarterApp extends Application {
     public String Integrate(String input)
     {
         return "lol TBD";
+    }
+
+    public void DisplayOutput(String output,VBox inputOutput)
+    {
+        Label out = new Label(output);
+        inputOutput.getChildren().add(out);
     }
 
     public static void main(String[] args) {
