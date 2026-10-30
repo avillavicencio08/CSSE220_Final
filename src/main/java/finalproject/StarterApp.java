@@ -36,9 +36,10 @@ public class StarterApp extends Application {
         Button jump = new Button("Flap");
         Label status = new Label("Ready");
         TextField textField = new TextField();
+        Label fillerDisp = new Label("");
         //textField.setMaxWidth(900);
 
-        VBox inputOutput = new VBox(textField);
+        VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
 
         start.setOnAction(event -> {
