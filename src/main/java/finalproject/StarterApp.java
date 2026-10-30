@@ -31,7 +31,7 @@ public class StarterApp extends Application {
         root.setPadding(new Insets(20));
 
         // TODO 4: Set the window title and size.
-        Scene scene = new Scene(root, 420, 220);
+        Scene scene = new Scene(root, 1620, 820);
         stage.setTitle("CSSE220 Team Starter");
         stage.setScene(scene);
         stage.show();
