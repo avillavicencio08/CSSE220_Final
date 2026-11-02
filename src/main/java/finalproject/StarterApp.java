@@ -25,6 +25,7 @@ import java.sql.Time;
  * Replace this simple window with the first version of your project.
  */
 public class StarterApp extends Application {
+    private Timeline flappy;
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
@@ -66,13 +67,13 @@ public class StarterApp extends Application {
         canvas.getChildren().add(bird.getView());
         Pipes pipes = new Pipes();
 
-        javafx.animation.Timeline flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
+        flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
             bird.step();
             if (!pipes.step(canvas,bird.getView().getTranslateY())) //checking if we have lost
             {
                 pipes.ClearAllPipes(canvas);
                 bird.reset();
-                //flappy.stop();
+                flappy.stop();
             }
         }));
         flappy.setCycleCount(Timeline.INDEFINITE);
