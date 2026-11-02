@@ -71,4 +71,12 @@ public class InvTrig implements Expression {
     public double evaluate(double x) {
         return 0;
     }
+
+    public Expression getInput() {
+        return in;
+    }
+
+    public TrigFunction getFn() {
+        return fn;
+    }
 }

@@ -43,4 +43,12 @@ public class Logarithm implements Expression {
     public double evaluate(double x) {
         return 0;
     }
+
+    public Expression getBase() {
+        return base;
+    }
+
+    public Expression getInput() {
+        return val;
+    }
 }

@@ -33,4 +33,16 @@ public class Constant implements Expression {
         if(decimal) return dvalue;
         else return value;
     }
+
+    public boolean isDecimal() {
+        return decimal;
+    }
+
+    public double getDoubleValue() {
+        return dvalue;
+    }
+
+    public int getIntValue() {
+        return value;
+    }
 }

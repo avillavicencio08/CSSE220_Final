@@ -58,4 +58,12 @@ public class Exponential implements Expression {
     public double evaluate(double x) {
         return Math.pow(base.evaluate(x), exponent.evaluate(x));
     }
+
+    public Expression getBase() {
+        return base;
+    }
+
+    public Expression getExponent() {
+        return exponent;
+    }
 }

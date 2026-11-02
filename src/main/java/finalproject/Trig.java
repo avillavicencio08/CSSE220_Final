@@ -56,4 +56,12 @@ public class Trig implements Expression {
 
         return o;
     }
+
+    public TrigFunction getFn() {
+        return fn;
+    }
+
+    public Expression getTheta() {
+        return theta;
+    }
 }

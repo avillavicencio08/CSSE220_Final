@@ -4,6 +4,7 @@ public class Arithmetic implements Expression {
     private Expression a;
     private Expression b;
     private Operation op;
+
     public Arithmetic(Expression a, Expression b, Operation op) {
         this.a = a;
         this.b = b;
@@ -73,5 +74,17 @@ public class Arithmetic implements Expression {
     @Override
     public double evaluate(double x) {
         return 0;
+    }
+
+    public Expression getA() {
+        return a;
+    }
+
+    public Expression getB() {
+        return b;
+    }
+
+    public Operation getOperation() {
+        return op;
     }
 }
