@@ -1,11 +1,14 @@
 package finalproject;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -14,6 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.sql.Time;
 
 /**
  * Starter JavaFX app for CSSE220 Milestone 1.
@@ -37,8 +42,6 @@ public class StarterApp extends Application {
         Label status = new Label("");
         TextField textField = new TextField();
         Label fillerDisp = new Label("");
-        //textField.setMaxWidth(900);
-        //test
 
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
@@ -58,6 +61,26 @@ public class StarterApp extends Application {
         canvas.setPrefSize(500, 300);
         canvas.setMinSize(500, 300);
         canvas.setMaxSize(500, 300);
+
+        FlappyToken bird = new FlappyToken();
+        canvas.getChildren().add(bird.getView());
+        Pipes pipes = new Pipes();
+
+        javafx.animation.Timeline flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
+            bird.step();
+            if (!pipes.step(canvas,bird.getView().getTranslateY())) //checking if we have lost
+            {
+                pipes.ClearAllPipes(canvas);
+                bird.reset();
+                //flappy.stop();
+            }
+        }));
+        flappy.setCycleCount(Timeline.INDEFINITE);
+        jump.setOnAction( event -> {
+            flappy.play();
+            bird.yVel = 3;
+        });
+
 
 //        canvas.setOnKeyPressed(event -> {
 //            KeyCode code = event.getCode();
