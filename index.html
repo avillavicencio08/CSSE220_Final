@@ -3,11 +3,38 @@
 	<head>
 		<style>
 			html {
-				background-color: blue;
+				background-color: yellow;
+			}
+			table {
+				border-collapse: collapse;
+				border: 3px solid black;
+				border-radius=10px;
+			}
+			thead, tbody, tr, th, td {
+				border: 1px solid black !important;
 			}
 		</style>
 	</head>
 	<body>
 		<h1>Hello World</h1>
+		<p>Some text here</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Steps</th>
+					<th>Left Side of the Equation</th>
+					<th>Equality?</th>
+					<th>Right Side of the equation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>1</th>
+					<td>ax² + bx + c</td>
+					<td>=</td>
+					<td>0</td>
+				</tr>
+			</tbody>
+		</table>
 	</body>
 </html>
