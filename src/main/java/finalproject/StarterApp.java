@@ -31,10 +31,10 @@ public class StarterApp extends Application {
         Rectangle ground = new Rectangle(0, 50, 500, 250);
         ground.setFill(Color.LIGHTGREEN);
 
-        Button start = new Button("Integrate");
+        Button start = new Button("Diffrentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
-        Label status = new Label("Ready");
+        Label status = new Label("");
         TextField textField = new TextField();
         Label fillerDisp = new Label("");
         //textField.setMaxWidth(900);
@@ -46,6 +46,9 @@ public class StarterApp extends Application {
             String output = Integrate(textField.getText());
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
+        });
+        reset.setOnAction(event -> {
+            ClearOutputs(inputOutput);
         });
 
         Pane canvas = new Pane(sky, ground,inputOutput);
@@ -84,20 +87,6 @@ public class StarterApp extends Application {
             statusLabel.setText("Your team has launched the shared starter.");
         });
 
-        // TODO 3: Arrange the title, message, and control in a clean layout.
-        //VBox root = new VBox(12, titleLabel, statusLabel, actionButton);
-        //root.setPadding(new Insets(20));
-
-
-        // TODO 4: Set the window title and size.
-//        Scene scene = new Scene(root, 1620, 820);
-//        stage.setTitle("CSSE220 Team Starter");
-//        stage.setScene(scene);
-//        stage.show();
-
-        //I'm throwing the cat! I'm throwing the dog!
-
-        // TODO 5: Replace this starter view with your real app design.
     }
 
     public String Integrate(String input)
@@ -109,6 +98,14 @@ public class StarterApp extends Application {
     {
         Label out = new Label(output);
         inputOutput.getChildren().add(out);
+    }
+
+    public void ClearOutputs(VBox inputOutput)
+    {
+        while (inputOutput.getChildren().size() > 2)
+        {
+            inputOutput.getChildren().remove(2);
+        }
     }
 
     public static void main(String[] args) {
