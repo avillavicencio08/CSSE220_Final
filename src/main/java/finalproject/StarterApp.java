@@ -38,6 +38,7 @@ public class StarterApp extends Application {
         TextField textField = new TextField();
         Label fillerDisp = new Label("");
         //textField.setMaxWidth(900);
+        //test
 
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
