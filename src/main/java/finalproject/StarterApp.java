@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 /**
  * Starter JavaFX app for CSSE220 Milestone 1.
@@ -17,7 +19,7 @@ public class StarterApp extends Application {
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
-        Label titleLabel = new Label("CSSE220 Final Project - Debug Matthew");
+        Label titleLabel = new Label("CSSE220 Final Project - Wolphram Beta™");
         Label statusLabel = new Label("Starter app is ready.");
 
         // TODO 2: Add your first interactive control (button, text field, etc.).
@@ -26,13 +28,19 @@ public class StarterApp extends Application {
             statusLabel.setText("Your team has launched the shared starter.");
         });
 
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");
+
         // TODO 3: Arrange the title, message, and control in a clean layout.
-        VBox root = new VBox(12, titleLabel, statusLabel, actionButton);
+        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, webView);
         root.setPadding(new Insets(20));
+
+
 
         // TODO 4: Set the window title and size.
         Scene scene = new Scene(root, 420, 220);
-        stage.setTitle("CSSE220 Team Starter");
+        stage.setTitle("CSSE220 Team Starter - Wolphram Beta™");
         stage.setScene(scene);
         stage.show();
 
