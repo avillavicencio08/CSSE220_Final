@@ -44,11 +44,10 @@ public class Trig implements Expression {
                 return new Arithmetic(new Trig(theta, TrigFunction.SINH), theta.calculateDerivative(), Operation.MULTIPLY);
             }
             case TANH -> {
-                Expression s = new Trig(theta, TrigFunction.SINH);
                 Expression c = new Trig(theta, TrigFunction.COSH);
 
-                /* yea im not doing this by hand. */
-                return new Arithmetic(s, new Exponential(c, new Constant(-1)), Operation.MULTIPLY).calculateDerivative();
+                /* added tanh'(x) = sech^2 (x). */
+                return new Arithmetic(theta.calculateDerivative(), new Exponential(c, new Constant(-2)), Operation.MULTIPLY);
             }
         }
 
