@@ -13,6 +13,10 @@
 			thead, tbody, tr, th, td {
 				border: 1px solid black !important;
 			}
+			canvas {
+				width: 500px;
+				height: 500px;
+			}
 		</style>
 		<script>
 			class Grapher {
@@ -24,6 +28,7 @@
 					this.#ctx = this.#canvas.getContext("2d");
 					this.#ctx.fillStyle = "#ffffff";
 					this.#ctx.fillRect(0, 0, 500, 500);
+					//this.#ctx.fillRect(1, 1, 499, 499);
 					this.#ctx.fillStyle = "#000000";
 				}
 
@@ -63,7 +68,7 @@
 			<tbody>
 				<tr>
 					<th>1</th>
-					<td>ax² + bx + c</td>
+					<td>ax^2 + bx + c</td>
 					<td>=</td>
 					<td>0</td>
 				</tr>
@@ -71,9 +76,37 @@
 		</table>
 		<canvas id="graph" width=500 height=500>Your browser doesn't support the HTML Canvas element.</canvas>
 		<script>
-			let myGrapher = new Grapher();
+			/*let myGrapher = new Grapher();
 			myGrapher.drawLine(0, 0, 400, 400);
-			myGrapher.drawLine(400, 0, 0, 400);
+			myGrapher.drawLine(400, 0, 0, 400);*/
+			let myCtx = document.getElementById("graph").getContext("2d");
+			myCtx.fillStyle = "#ffffff";
+			myCtx.fillRect(0, 0, 500, 500);
+			myCtx.fillStyle = "#000000";
+			x1 = 0;
+			y1 = 0;
+			x2 = 400;
+			y2 = 400;
+			//function fill(x1, y1, x2, y2) {
+					if(x1 > x2) {
+						let temp = x1;
+						x1 = x2;
+						x2 = temp;
+						temp = y1;
+						y1 = y2;
+						y2 = temp;
+					}
+					let slope = (y2 - y1)/(x2 - x1);
+					for(let i = 0; i < 2000; ++i) {//while(((((x1 - 5) < x2) != true) && (((x1 + 5) > x2) != true)) && ((((y1 - 5) < y2) != true) && (((y1 + 5) > y2) != true))) {
+						myCtx.fillRect(x1, y1, 3, 3);
+						x1 += 1;
+						y1 += slope;
+					}
+					myCtx.fillRect(x2, y2, 3, 3);
+			/*}
+			fill(0, 0, 400, 400);
+			fill(400, 0, 0, 400);*/
 		</script>
+		<!--<script src="script.js"></script>-->
 	</body>
 </html>

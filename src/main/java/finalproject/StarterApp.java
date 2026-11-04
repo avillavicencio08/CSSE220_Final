@@ -32,6 +32,7 @@ public class StarterApp extends Application {
         WebEngine webEngine = webView.getEngine();
         webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");
 
+
         // TODO 3: Arrange the title, message, and control in a clean layout.
         VBox root = new VBox(12, titleLabel, statusLabel, actionButton, webView);
         root.setPadding(new Insets(20));
@@ -44,7 +45,11 @@ public class StarterApp extends Application {
         stage.setScene(scene);
         stage.show();
 
-        // TODO 5: Replace this starter view with your real app design.
+        /*// TODO 5: Replace this starter view with your real app design.
+        for(int i = 0; i < 1000000000; ++i) {
+            ;
+        }
+        webEngine.executeScript("new Grapher();");*/
     }
 
     public static void main(String[] args) {
