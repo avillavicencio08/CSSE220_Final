@@ -35,7 +35,7 @@ public class Logarithm implements Expression {
         } else {
             // what the fuck.
             // krill yourself
-            return null;
+            throw new ArithmeticException("log base should not be variable.");
         }
     }
 
