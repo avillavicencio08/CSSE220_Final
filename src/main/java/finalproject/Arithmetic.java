@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Arithmetic implements Expression {
     private Expression a;
     private Expression b;
@@ -74,6 +76,11 @@ public class Arithmetic implements Expression {
     @Override
     public double evaluate(double x) {
         return 0;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Arithmetic((Expression) args.get(0), (Expression) args.get(1), (Operation) args.get(2));
     }
 
     public Expression getA() {

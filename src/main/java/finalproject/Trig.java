@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Trig implements Expression {
     Expression theta;
     TrigFunction fn;
@@ -67,6 +69,11 @@ public class Trig implements Expression {
         }
 
         return o;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Trig((Expression) args.get(0), (TrigFunction) args.get(1));
     }
 
     public TrigFunction getFn() {

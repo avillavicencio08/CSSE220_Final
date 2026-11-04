@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Logarithm implements Expression {
     Expression base;
     Expression val;
@@ -39,9 +41,16 @@ public class Logarithm implements Expression {
         }
     }
 
+
+
     @Override
     public double evaluate(double x) {
         return 0;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Logarithm((Expression) args.get(0), (Expression) args.get(1));
     }
 
     public Expression getBase() {
