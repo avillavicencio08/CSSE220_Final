@@ -69,6 +69,7 @@ public class StarterApp extends Application {
             ClearOutputs(inputOutput);
             flappy.stop();
             bird.getView().setVisible(false);
+            pipes.ClearAllPipes(canvas);
         });
 
         flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
