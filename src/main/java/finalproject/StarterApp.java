@@ -52,9 +52,6 @@ public class StarterApp extends Application {
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
         });
-        reset.setOnAction(event -> {
-            ClearOutputs(inputOutput);
-        });
 
         Pane canvas = new Pane(sky, ground,inputOutput);
         canvas.setFocusTraversable(true);
@@ -64,15 +61,27 @@ public class StarterApp extends Application {
         canvas.setMaxSize(500, 300);
 
         FlappyToken bird = new FlappyToken();
+        bird.getView().setVisible(false);
         canvas.getChildren().add(bird.getView());
         Pipes pipes = new Pipes();
 
+        reset.setOnAction(event -> {
+            ClearOutputs(inputOutput);
+            flappy.stop();
+            bird.getView().setVisible(false);
+        });
+
         flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
+            if (!bird.getView().isVisible())
+            {
+                bird.getView().setVisible(true);
+            }
             bird.step();
             if (!pipes.step(canvas,bird.getView().getTranslateY())) //checking if we have lost
             {
                 pipes.ClearAllPipes(canvas);
                 bird.reset();
+                bird.getView().setVisible(false);
                 flappy.stop();
             }
         }));
