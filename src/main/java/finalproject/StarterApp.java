@@ -36,6 +36,8 @@ public class StarterApp extends Application {
         stage.setScene(scene);
         stage.show();
 
+        //I'm throwing the cat! I'm throwing the dog!
+
         // TODO 5: Replace this starter view with your real app design.
     }
 
