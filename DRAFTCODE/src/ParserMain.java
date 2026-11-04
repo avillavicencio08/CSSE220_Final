@@ -4,62 +4,64 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class ParserMain {
-    HashMap<String, Expression> oneInputFuncs;
+    public HashMap<String, Expression> oneInputFuncs;
 
-    HashMap<String, Expression> twoInputFuncs;
+    public HashMap<String, Expression> twoInputFuncs;
 
-    HashMap<String, Expression> vars;
+    public HashMap<String, Expression> vars;
+
+    public HashMap<Expression, Enums> enums;
 
 
     public ParserMain(){
         this.oneInputFuncs = new HashMap<>();
 
         this.twoInputFuncs = new HashMap<>();
-        oneInputFuncs.put("sin", Trig);
-        oneInputFuncs.put("cos", Trig);
-         oneInputFuncs.put("tan", Trig);
-         oneInputFuncs.put("csc", Trig);
-         oneInputFuncs.put("sec", Trig);
-         oneInputFuncs.put("cot", Trig);
-         oneInputFuncs.put("sinh", Trig);
-         oneInputFuncs.put("cosh", Trig);
-         oneInputFuncs.put("tanh", Trig);
-         oneInputFuncs.put("csch", Trig);
-         oneInputFuncs.put("sech", Trig);
-         oneInputFuncs.put("coth", Trig);
-         oneInputFuncs.put("arcsinh", InvTrig);
-         oneInputFuncs.put("arccosh", InvTrig);
-         oneInputFuncs.put("arctanh", InvTrig);
-         oneInputFuncs.put("arccsch", InvTrig);
-         oneInputFuncs.put("arcsech", InvTrig);
-         oneInputFuncs.put("arccoth", InvTrig);
-         oneInputFuncs.put("arcsin", InvTrig);
-         oneInputFuncs.put("arccos", InvTrig);
-         oneInputFuncs.put("arctan", InvTrig);
-         oneInputFuncs.put("arccsc", InvTrig);
-         oneInputFuncs.put("arcsec", InvTrig);
-         oneInputFuncs.put("arccot", InvTrig);
-         oneInputFuncs.put("ln", Logarithm);
+        oneInputFuncs.put("SIN", trig);
+        oneInputFuncs.put("COS", trig);
+         oneInputFuncs.put("TAN", trig);
+         oneInputFuncs.put("CSC", trig);
+         oneInputFuncs.put("SEC", trig);
+         oneInputFuncs.put("COT", trig);
+         oneInputFuncs.put("SINH", trig);
+         oneInputFuncs.put("COSH", trig);
+         oneInputFuncs.put("TANH", trig);
+         oneInputFuncs.put("CSCH", trig);
+         oneInputFuncs.put("SECH", trig);
+         oneInputFuncs.put("COTH", trig);
+         oneInputFuncs.put("ARCSINH", invTrig);
+         oneInputFuncs.put("ARCCOSH", invTrig);
+         oneInputFuncs.put("ARCTANH", invTrig);
+         oneInputFuncs.put("ARCCSCH", invTrig);
+         oneInputFuncs.put("ARCSECH", invTrig);
+         oneInputFuncs.put("ARCCOTH", invTrig);
+         oneInputFuncs.put("ARCSIN", invTrig);
+         oneInputFuncs.put("ARCCOS", invTrig);
+         oneInputFuncs.put("ARCTAN", invTrig);
+         oneInputFuncs.put("ARCCSC", invTrig);
+         oneInputFuncs.put("ARCSEC", invTrig);
+         oneInputFuncs.put("ARCCOT", invTrig);
+         oneInputFuncs.put("LN", logarithm);
 
 
 
 
-        twoInputFuncs.put("*", Arithmetic);
-        twoInputFuncs.put("^", Exponential);
-        twoInputFuncs.put("+", Arithmetic);
-         twoInputFuncs.put("-", Arithmetic);
-         twoInputFuncs.put("/", Arithmetic);
-         twoInputFuncs.put("log", Logarithm);
+        twoInputFuncs.put("*", arithmetic);
+        twoInputFuncs.put("^", exponential);
+        twoInputFuncs.put("+", arithmetic);
+         twoInputFuncs.put("-", arithmetic);
+         twoInputFuncs.put("/", arithmetic);
+         twoInputFuncs.put("log", logarithm);
 
 
 
 
         this.vars = new HashMap<>();
-        vars.put("pi", Constant);
-        vars.put("e", Constant);
-        vars.put("g", Constant);
-        vars.put("Y",Constant);
-        vars.put("x", Variable);
+        vars.put("PI", constant);
+        vars.put("E", constant);
+        vars.put("g", constant);
+        vars.put("GAMMA",constant);
+        vars.put("x", variable);
 
     }
 
@@ -95,9 +97,9 @@ public class ParserMain {
 
 
 
-    public static boolean isLong(String s) {
+    public static boolean isDouble(String s) {
         try {
-            Long.parseLong(s);
+            Double.parseDouble(s);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -129,9 +131,10 @@ private ArrayList<Object> funcParse(String func){
             if (func.charAt(charN) == '(') {
                 pDepth += 1;
             } else if (func.charAt(charN) == ')') {
-                if (isLong(current)){
+                if (isDouble(current)){
                         searching = false;
                         parts.add(current);
+                    vars.put(current,Constant);
                 }
 
                 pDepth -= 1;
@@ -195,7 +198,17 @@ private ArrayList<Object> funcParse(String func){
 
 
     public static void main(String[] args){
+
+
+
         ParserMain m =new ParserMain();
+        Trig trig = new Trig(null,null);
+        InvTrig invTrig = new InvTrig(null,null);
+        Logarithm logarithm = new Logarithm(null,null);
+        Exponential exponential = new Exponential(null,null);
+        Arithmetic arithmetic = new Arithmetic(null,null,null);
+        Variable variable = new Variable(null);
+        Constant constant = new Constant(null);
 
         ArrayList<Object> equation = new ArrayList<>();
         String function;
@@ -204,6 +217,8 @@ private ArrayList<Object> funcParse(String func){
 
         equation = m.funcParse(function);
         printNested(equation);
+
+
 
     }
 }
