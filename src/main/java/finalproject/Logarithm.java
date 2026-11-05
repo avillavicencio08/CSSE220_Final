@@ -18,7 +18,7 @@ public class Logarithm implements Expression {
 
     @Override
     public boolean isConstant() {
-        return (base.isConstant() || val.isConstant());
+        return (base.isConstant() && val.isConstant());
     }
 
     @Override

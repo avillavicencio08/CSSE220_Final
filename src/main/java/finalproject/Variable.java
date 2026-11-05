@@ -21,7 +21,7 @@ public class Variable implements Expression {
 
     @Override
     public Expression calculateDerivative() {
-        return null;
+        return new Constant(1);
     }
 
     @Override

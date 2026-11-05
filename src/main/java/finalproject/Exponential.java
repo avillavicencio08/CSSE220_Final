@@ -19,7 +19,7 @@ public class Exponential implements Expression {
 
     @Override
     public boolean isConstant() {
-        return (base.isConstant() || exponent.isConstant());
+        return (base.isConstant() && exponent.isConstant());
     }
 
     @Override
