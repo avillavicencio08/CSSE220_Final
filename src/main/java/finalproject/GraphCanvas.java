@@ -5,8 +5,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /*
- * Resources used: https://docs.oracle.com/en/java/java-components/javafx/21/docs/javafx.graphics/module-summary.html
- * Some pages I used were found after clicking 2 links in the above link.
+ * Resources used: Class Resources, https://docs.oracle.com/en/java/java-components/javafx/21/docs/javafx.graphics/module-summary.html
+ * Some pages I used were found after clicking 2-5 links from the above link.
  */
 public class GraphCanvas extends Canvas {
     private GraphicsContext ctx;
