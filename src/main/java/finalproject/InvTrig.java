@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class InvTrig implements Expression {
     Expression in;
     TrigFunction fn;
@@ -70,6 +72,19 @@ public class InvTrig implements Expression {
     @Override
     public double evaluate(double x) {
         return 0;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new InvTrig((Expression) args.get(0), (TrigFunction) args.get(1));
+    }
+
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(in);
+        fields.add(fn);
+        return fields;
     }
 
     public Expression getInput() {
