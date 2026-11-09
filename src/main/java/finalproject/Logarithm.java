@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Logarithm implements Expression {
     Expression base;
     Expression val;
@@ -16,7 +18,7 @@ public class Logarithm implements Expression {
 
     @Override
     public boolean isConstant() {
-        return (base.isConstant() || val.isConstant());
+        return (base.isConstant() && val.isConstant());
     }
 
     @Override
@@ -35,13 +37,20 @@ public class Logarithm implements Expression {
         } else {
             // what the fuck.
             // krill yourself
-            return null;
+            throw new ArithmeticException("log base should not be variable.");
         }
     }
+
+
 
     @Override
     public double evaluate(double x) {
         return 0;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Logarithm((Expression) args.get(0), (Expression) args.get(1));
     }
 
     public Expression getBase() {

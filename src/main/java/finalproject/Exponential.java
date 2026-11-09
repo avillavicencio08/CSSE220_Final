@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Exponential implements Expression {
     Expression base;
     Expression exponent;
@@ -17,7 +19,7 @@ public class Exponential implements Expression {
 
     @Override
     public boolean isConstant() {
-        return (base.isConstant() || exponent.isConstant());
+        return (base.isConstant() && exponent.isConstant());
     }
 
     @Override
@@ -57,6 +59,11 @@ public class Exponential implements Expression {
     @Override
     public double evaluate(double x) {
         return Math.pow(base.evaluate(x), exponent.evaluate(x));
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Exponential((Expression) args.get(0), (Expression) args.get(1));
     }
 
     public Expression getBase() {

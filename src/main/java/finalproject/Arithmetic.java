@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Arithmetic implements Expression {
     private Expression a;
     private Expression b;
@@ -19,7 +21,7 @@ public class Arithmetic implements Expression {
 
     @Override
     public boolean isConstant() {
-        return (a.isConstant() || b.isConstant());
+        return (a.isConstant() && b.isConstant());
     }
 
     @Override
@@ -27,8 +29,8 @@ public class Arithmetic implements Expression {
         if(isConstant()) return null;
 
         if(op == Operation.ADD) {
-            if(a.isConstant()) return a.calculateDerivative();
-            else if(b.isConstant()) return b.calculateDerivative();
+            if(a.isConstant()) return b.calculateDerivative();
+            else if(b.isConstant()) return a.calculateDerivative();
 
             return new Arithmetic(a.calculateDerivative(), b.calculateDerivative(), op);
         } else if(op == Operation.MULTIPLY) {
@@ -73,7 +75,20 @@ public class Arithmetic implements Expression {
 
     @Override
     public double evaluate(double x) {
-        return 0;
+        double r = Double.NaN;
+
+        switch (op) {
+            case ADD -> r = a.evaluate(x) + b.evaluate(x);
+            case MULTIPLY -> r = a.evaluate(x) * b.evaluate(x);
+            case DIVIDE -> r = a.evaluate(x) / b.evaluate(x);
+        }
+
+        return r;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Arithmetic((Expression) args.get(0), (Expression) args.get(1), (Operation) args.get(2));
     }
 
     public Expression getA() {

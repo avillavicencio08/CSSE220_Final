@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Variable implements Expression {
     private String name;
 
@@ -19,13 +21,19 @@ public class Variable implements Expression {
 
     @Override
     public Expression calculateDerivative() {
-        return null;
+        return new Constant(1);
     }
 
     @Override
     public double evaluate(double x) {
         return x;
     }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Variable((String) args.getFirst());
+    }
+
 
     public String getName() {
         return name;
