@@ -2,6 +2,7 @@ package finalproject;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,7 +27,8 @@ public class StarterApp extends Application {
             statusLabel.setText("Your team has launched the shared starter.");
         });
 
-        GraphCanvas graphCanvas = new GraphCanvas();
+        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        graphCanvas.drawLine(20, 30, 40, 50);
 
         /*WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
@@ -40,7 +42,7 @@ public class StarterApp extends Application {
 
 
         // TODO 4: Set the window title and size.
-        Scene scene = new Scene(root, 420, 220);
+        Scene scene = new Scene(root, 1920, 1080); //420, 220);
         stage.setTitle("CSSE220 Team Starter - Wolphram Beta™");
         stage.setScene(scene);
         stage.show();
