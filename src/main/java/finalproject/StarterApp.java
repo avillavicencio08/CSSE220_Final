@@ -58,7 +58,7 @@ public class StarterApp extends Application {
         canvas.setOnMouseClicked(event -> canvas.requestFocus());
         canvas.setPrefSize(500, 300);
         canvas.setMinSize(500, 300);
-        canvas.setMaxSize(500, 300);
+        //canvas.setMaxSize(500, 300);
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
@@ -111,7 +111,7 @@ public class StarterApp extends Application {
         root.setBottom(status);
         stage.setTitle("Derivative Calculator");
         stage.setScene(new Scene(root, 640, 400));
-        stage.setResizable(false);
+        //stage.setResizable(false);
         stage.show();
         canvas.requestFocus();
 
