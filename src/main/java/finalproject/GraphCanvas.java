@@ -15,10 +15,10 @@ public class GraphCanvas extends Canvas {
         super(500, 500);
         ctx = this.getGraphicsContext2D();
 
-        this.resetGraph();
+        this.reset();
     }
 
-    public void resetGraph() {
+    public void reset() {
         // Fill background.
         ctx.setFill(Color.LIGHTGRAY);
         ctx.fillRect(0, 0, 500, 500);
