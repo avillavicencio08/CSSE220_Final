@@ -2,16 +2,11 @@ package finalproject;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.paint.Color;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 /**
  * Starter JavaFX app for CSSE220 Milestone 1.
@@ -31,11 +26,7 @@ public class StarterApp extends Application {
             statusLabel.setText("Your team has launched the shared starter.");
         });
 
-        Canvas canvas = new Canvas(500, 500);
-        GraphicsContext ctx = canvas.getGraphicsContext2D();
-
-        ctx.setFill(Color.BLACK);
-        ctx.fillRect(0, 0, 10, 10);
+        GraphCanvas graphCanvas = new GraphCanvas();
 
         /*WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
@@ -43,7 +34,7 @@ public class StarterApp extends Application {
 
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
-        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, canvas);//, webView);
+        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
         root.setPadding(new Insets(20));
 
 
