@@ -50,7 +50,7 @@ public class StarterApp extends Application {
         //I'm throwing the cat! I'm throwing the dog!
 
         // TODO 5: Replace this starter view with your real app design.
-        for(int i = 0; i < 1000000000; ++i) {
+        /*for(int i = 0; i < 1000000000; ++i) {
             ;
         }
         webEngine.executeScript("new Grapher();");*/
