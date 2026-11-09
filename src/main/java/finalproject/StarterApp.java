@@ -2,7 +2,10 @@ package finalproject;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -28,13 +31,19 @@ public class StarterApp extends Application {
             statusLabel.setText("Your team has launched the shared starter.");
         });
 
-        WebView webView = new WebView();
+        Canvas canvas = new Canvas(500, 500);
+        GraphicsContext ctx = canvas.getGraphicsContext2D();
+
+        ctx.setFill(Color.BLACK);
+        ctx.fillRect(0, 0, 10, 10);
+
+        /*WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
-        webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");
+        webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
 
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
-        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, webView);
+        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, canvas);//, webView);
         root.setPadding(new Insets(20));
 
 
