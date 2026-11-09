@@ -32,15 +32,15 @@ public class StarterApp extends Application {
         //Label titleLabel = new Label("CSSE220 Final Project");
         Label statusLabel = new Label("Starter app is ready.");
 
-        Rectangle sky = new Rectangle(0, 0, 500, 50);
-        sky.setFill(Color.LIGHTSKYBLUE);
-        Rectangle ground = new Rectangle(0, 50, 500, 250);
-        ground.setFill(Color.LIGHTGREEN);
+        Rectangle sky = new Rectangle(0, 0, 185, 50);
+        sky.setFill(Color.GREY);
+        Rectangle ground = new Rectangle(0, 50, 185, 2500);
+        ground.setFill(Color.LIGHTGRAY);
 
         Button start = new Button("Diffrentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
-        Label status = new Label("");
+        Label status = new Label("Wolfram Beta");
         TextField textField = new TextField();
         Label fillerDisp = new Label("");
 
@@ -53,23 +53,23 @@ public class StarterApp extends Application {
             DisplayOutput(output,inputOutput);
         });
 
-        Pane canvas = new Pane(sky, ground,inputOutput);
-        canvas.setFocusTraversable(true);
-        canvas.setOnMouseClicked(event -> canvas.requestFocus());
-        canvas.setPrefSize(500, 300);
-        canvas.setMinSize(500, 300);
-        //canvas.setMaxSize(500, 300); //I dont think we need
+        Pane myPane = new Pane(sky, ground,inputOutput);
+        myPane.setFocusTraversable(true);
+        myPane.setOnMouseClicked(event -> myPane.requestFocus());
+        myPane.setPrefSize(500, 300);
+        myPane.setMinSize(500, 300);
+        myPane.setMaxSize(1800, 1000); //we need for flappybird
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
-        canvas.getChildren().add(bird.getView());
+        myPane.getChildren().add(bird.getView());
         Pipes pipes = new Pipes();
 
         reset.setOnAction(event -> {
             ClearOutputs(inputOutput);
             flappy.stop();
             bird.getView().setVisible(false);
-            pipes.ClearAllPipes(canvas);
+            pipes.ClearAllPipes(myPane);
         });
 
         flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
@@ -78,9 +78,9 @@ public class StarterApp extends Application {
                 bird.getView().setVisible(true);
             }
             bird.step();
-            if (!pipes.step(canvas,bird.getView().getTranslateY())) //checking if we have lost
+            if (!pipes.step(myPane,bird.getView().getTranslateY(),bird.getView().getTranslateX())) //checking if we have lost
             {
-                pipes.ClearAllPipes(canvas);
+                pipes.ClearAllPipes(myPane);
                 bird.reset();
                 bird.getView().setVisible(false);
                 flappy.stop();
@@ -105,7 +105,7 @@ public class StarterApp extends Application {
         HBox header = new HBox(12, new Label("Lock in nolan!"));
         header.setPadding(new Insets(12));
         BorderPane root = new BorderPane();
-        root.setCenter(canvas);
+        root.setCenter(myPane);
         root.setTop(controls);
         //root.setTop(header);
         root.setBottom(status);
@@ -113,7 +113,7 @@ public class StarterApp extends Application {
         stage.setScene(new Scene(root, 640, 400));
         //stage.setResizable(false);
         stage.show();
-        canvas.requestFocus();
+        myPane.requestFocus();
 
 
         // TODO 2: Add your first interactive control (button, text field, etc.).
@@ -126,7 +126,7 @@ public class StarterApp extends Application {
 
     public String Integrate(String input)
     {
-        return "lol TBD";
+        return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
     }
 
     public void DisplayOutput(String output,VBox inputOutput)

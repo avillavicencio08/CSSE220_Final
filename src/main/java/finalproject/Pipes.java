@@ -19,16 +19,16 @@ public class Pipes {
     {
         allPipes = new ArrayList<>();
     }
-    public boolean step(javafx.scene.layout.Pane canvas,double birdY)
+    public boolean step(javafx.scene.layout.Pane canvas,double birdY,double birdX)
     {
 
         for(int i = 0; i < allPipes.size();i++)
         {
             allPipes.get(i).step();
             Group pipeView = allPipes.get(i).getView();
-            double pipeX = allPipes.get(i).getView().getTranslateX() + canvas.getMaxWidth();
-            double birdX = canvas.getMaxWidth() / 2;
-            if (pipeX < birdX + 5 && pipeX > birdX - 55) //it happens a bit before we reach pipe
+            double pipeX = allPipes.get(i).getView().getTranslateX() + canvas.getWidth();
+            //double birdX = canvas.getMaxWidth() / 2;
+            if (pipeX < birdX + 75 && pipeX > birdX - 20) //it happens a bit before we reach pipe
             {
                 int pipeY = allPipes.get(i).getHeight();
                 if (pipeY + 10 < birdY || pipeY - 90 > birdY)//low cieling fake floor
@@ -36,7 +36,7 @@ public class Pipes {
                     return false;
                 }
             }
-            if (pipeX < -50)
+            if (pipeX < canvas.getWidth() * -1)
             {
                 canvas.getChildren().remove(allPipes.get(i).getView());
                 allPipes.remove(i);
@@ -53,7 +53,7 @@ public class Pipes {
     }
     public void SummonPipe(javafx.scene.layout.Pane canvas)
     {
-        double ran = Math.random() * 200;
+        double ran = Math.random() * canvas.getHeight();// * 2000;
         Pipe p1 = new Pipe((int)ran,50, canvas.getWidth(), canvas.getHeight());
         allPipes.add(p1);
         canvas.getChildren().add(p1.getView());
