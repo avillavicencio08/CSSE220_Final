@@ -58,7 +58,7 @@ public class StarterApp extends Application {
         canvas.setOnMouseClicked(event -> canvas.requestFocus());
         canvas.setPrefSize(500, 300);
         canvas.setMinSize(500, 300);
-        //canvas.setMaxSize(500, 300);
+        //canvas.setMaxSize(500, 300); //I dont think we need
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
