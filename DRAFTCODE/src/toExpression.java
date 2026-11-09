@@ -26,7 +26,7 @@ public class toExpression {
             if (one.get(num)==variable){
                 return one.get(list.get(0)).createChild(num);
             }
-            return one.get(list.get(0)).createChild(Double.parseDouble(list.get(0)));
+            return one.get(list.get(0)).createChild(getConstant(list.get(0)));
         }
         return null;
 
