@@ -41,6 +41,13 @@ public class Constant implements Expression {
         return new Constant((Double) args.getFirst());
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(this.dvalue);
+        return fields;
+    }
+
     public boolean isDecimal() {
         return decimal;
     }

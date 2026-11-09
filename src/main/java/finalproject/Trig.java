@@ -76,6 +76,14 @@ public class Trig implements Expression {
         return new Trig((Expression) args.get(0), (TrigFunction) args.get(1));
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(theta);
+        fields.add(fn);
+        return fields;
+    }
+
     public TrigFunction getFn() {
         return fn;
     }

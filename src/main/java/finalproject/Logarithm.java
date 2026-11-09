@@ -53,6 +53,14 @@ public class Logarithm implements Expression {
         return new Logarithm((Expression) args.get(0), (Expression) args.get(1));
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(base);
+        fields.add(val);
+        return fields;
+    }
+
     public Expression getBase() {
         return base;
     }

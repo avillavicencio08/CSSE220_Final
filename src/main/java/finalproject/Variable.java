@@ -34,6 +34,13 @@ public class Variable implements Expression {
         return new Variable((String) args.getFirst());
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(name);
+        return fields;
+    }
+
 
     public String getName() {
         return name;

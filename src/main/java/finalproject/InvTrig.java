@@ -79,6 +79,14 @@ public class InvTrig implements Expression {
         return new InvTrig((Expression) args.get(0), (TrigFunction) args.get(1));
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(in);
+        fields.add(fn);
+        return fields;
+    }
+
     public Expression getInput() {
         return in;
     }

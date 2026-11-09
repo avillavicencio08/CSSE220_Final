@@ -66,6 +66,14 @@ public class Exponential implements Expression {
         return new Exponential((Expression) args.get(0), (Expression) args.get(1));
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(base);
+        fields.add(exponent);
+        return fields;
+    }
+
     public Expression getBase() {
         return base;
     }

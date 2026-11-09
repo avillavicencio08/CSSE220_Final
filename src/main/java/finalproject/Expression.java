@@ -9,4 +9,5 @@ public interface Expression {
     Expression calculateDerivative();
     double evaluate(double x);
     Expression createChild(ArrayList<Object> args);
+    ArrayList<Object> getFields();
 }

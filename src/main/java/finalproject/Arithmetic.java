@@ -91,6 +91,15 @@ public class Arithmetic implements Expression {
         return new Arithmetic((Expression) args.get(0), (Expression) args.get(1), (Operation) args.get(2));
     }
 
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(a);
+        fields.add(b);
+        fields.add(op);
+        return fields;
+    }
+
     public Expression getA() {
         return a;
     }
