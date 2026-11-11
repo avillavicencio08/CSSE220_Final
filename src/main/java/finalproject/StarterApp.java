@@ -28,7 +28,8 @@ public class StarterApp extends Application {
         });
 
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
-        graphCanvas.drawLine(20, 30, 40, 50);
+        //graphCanvas.drawLine(20, 30, 40, 50);
+        graphCanvas.drawLine(new Point2D(20, 30), new Point2D(40, 50));
 
         // Some tests.
         /*Point2D[] points = new Point2D[3];
