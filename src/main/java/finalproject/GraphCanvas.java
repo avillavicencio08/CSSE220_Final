@@ -45,6 +45,10 @@ public class GraphCanvas extends Canvas {
     }
 
     public void drawLine(double x1, double y1, double x2, double y2) {
+        if((x1 < 0) || (x1 > this.getWidth()) || (y1 < 0) || (y1 > this.getWidth()) || (x2 < 0) || (x2 > this.getHeight()) || (y2 < 0) || (y2 > this.getHeight())) {
+            System.out.println("Error: Bounds Check (on the Graph space)!!!");
+            return;
+        }
         if (x1 > x2) {
             double tempX = x1;
             double tempY = y1;
