@@ -44,36 +44,6 @@ public class GraphCanvas extends Canvas {
         ctx.setFill(this.lineColor);
     }
 
-    // This method is deprecated.
-    public void drawLine(double x1, double y1, double x2, double y2) {
-        if((x1 < 0) || (x1 > this.getWidth()) || (y1 < 0) || (y1 > this.getWidth()) || (x2 < 0) || (x2 > this.getHeight()) || (y2 < 0) || (y2 > this.getHeight())) {
-            System.out.println("Error: Bounds Check (on the Graph space)!!!");
-            return;
-        }
-        if (x1 > x2) {
-            double tempX = x1;
-            double tempY = y1;
-            x1 = x2;
-            y1 = y2;
-            x2 = tempX;
-            y2 = tempY;
-        }
-
-        double denominator = x2 - x1;
-
-        if (denominator == 0) {
-            System.out.println("Warning: I cannot handle undefined slope yet.");
-            return;
-        }
-
-        double slope = (y2 - y1) / denominator;
-
-        for (; x1 < x2; x1 += 1) {
-            ctx.fillRect(x1, y1, /*x1 + */5, /*y1 + */5);
-            y1 += slope;
-        }
-    }
-
     public void drawLine(Point2D p1, Point2D p2) {
         double x1 = p1.x;
         double y1 = p1.y;
