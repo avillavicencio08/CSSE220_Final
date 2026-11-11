@@ -69,6 +69,7 @@ public class GraphCanvas extends Canvas {
         }
     }
 
+    // TODO: Split this method into one that only plots, and another that draws lines between each point.
     public void drawPoints(Point2D[] points) {
         for(int i = 0; points.length > i; ++i) {
             Point2D point = points[i];
