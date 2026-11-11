@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
+import finalproject.Point2D;
 import java.sql.Time;
 
 /**
@@ -105,13 +105,15 @@ public class StarterApp extends Application {
         controls.setPadding(new Insets(12));
         HBox header = new HBox(12, new Label("Lock in nolan!"));
         header.setPadding(new Insets(12));
-        BorderPane root = new BorderPane();
-        root.setCenter(myPane);
-        root.setTop(controls);
-        //root.setTop(header);
-        root.setBottom(status);
+
+        BorderPane rootPane = new BorderPane();
+
+        rootPane.setCenter(myPane);
+        rootPane.setTop(controls);
+        //rootPane.setTop(header);
+        rootPane.setBottom(status);
         stage.setTitle("Derivative Calculator");
-        stage.setScene(new Scene(root, 640, 400));
+        stage.setScene(new Scene(rootPane, 640, 400));
         //stage.setResizable(false);
         stage.show();
         myPane.requestFocus();
@@ -122,16 +124,9 @@ public class StarterApp extends Application {
         actionButton.setOnAction(event -> {
             statusLabel.setText("Your team has launched the shared starter.");
         });
-
-    }
-
-    public String Integrate(String input)
-    {
-        return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
-    }
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
-        graphCanvas.drawLine(new Point2D(20, 30), new Point2D(40, 50));
+        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
         // Some tests.
         /*Point2D[] points = new Point2D[3];
@@ -140,10 +135,10 @@ public class StarterApp extends Application {
         points[2] = new Point2D(400, 700);
         graphCanvas.tempPlotName(points);*/
 
-        Point2D[] points = new Point2D[3];
-        points[0] = new Point2D(100, 100);
-        points[1] = new Point2D(205, 205);
-        points[2] = new Point2D(300, 800);
+        Point2D[] points = new finalproject.Point2D[3];
+        points[0] = new finalproject.Point2D(100, 100);
+        points[1] = new finalproject.Point2D(205, 205);
+        points[2] = new finalproject.Point2D(300, 800);
         graphCanvas.tempPlotName(points);
 
         /*WebView webView = new WebView();
@@ -162,6 +157,14 @@ public class StarterApp extends Application {
         stage.setTitle("CSSE220 Team Starter - Wolphram Beta™");
         stage.setScene(scene);
         stage.show();
+
+
+    }
+
+    public String Integrate(String input)
+    {
+        return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
+    }
 
     public void DisplayOutput(String output,VBox inputOutput)
     {
