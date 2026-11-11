@@ -50,6 +50,7 @@ public class GraphCanvas extends Canvas {
         double x2 = p2.x;
         double y2 = p2.y;
 
+        // TODO: Clip the region we are graphing.
         if((x1 < 0) || (x1 > this.getWidth()) || (y1 < 0) || (y1 > this.getWidth()) || (x2 < 0) || (x2 > this.getHeight()) || (y2 < 0) || (y2 > this.getHeight())) {
             System.out.println("Error: Bounds Check (on the Graph space)!!!");
             return;
@@ -78,12 +79,17 @@ public class GraphCanvas extends Canvas {
         }
     }
 
+    public void drawLine(Point2D point, double slope) {
+        // TODO: Implement this.
+    }
+
     // TODO: Split this method into one that only plots, and another that draws lines between each point.
     /*public void drawPoints(Point2D[] points) {
 
     }*/
 
     public void plot(Point2D[] points) {
+        // TODO: check the bounds with the border of the GraphCanvas.
         for(int i = 0; points.length > i; ++i) {
             Point2D point = points[i];
             this.ctx.fillRect(point.x, point.y, 5, 5);
