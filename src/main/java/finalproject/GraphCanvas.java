@@ -79,6 +79,10 @@ public class GraphCanvas extends Canvas {
         }
     }
 
+    public void drawLine(Point2D point, double slope) {
+        // TODO: Implement this.
+    }
+
     // TODO: Split this method into one that only plots, and another that draws lines between each point.
     /*public void drawPoints(Point2D[] points) {
 
