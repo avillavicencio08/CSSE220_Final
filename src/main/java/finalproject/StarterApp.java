@@ -29,6 +29,10 @@ public class StarterApp extends Application {
 
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         graphCanvas.drawLine(20, 30, 40, 50);
+        Point2D[] points = new Point2D[2];
+        points[0] = new Point2D(500, 500);
+        points[1] = new Point2D(505, 505);
+        graphCanvas.drawPoints(points);
 
         /*WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();

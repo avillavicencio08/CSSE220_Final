@@ -68,4 +68,11 @@ public class GraphCanvas extends Canvas {
             y1 += slope;
         }
     }
+
+    public void drawPoints(Point2D[] points) {
+        for(int i = 0; points.length > i; ++i) {
+            Point2D point = points[i];
+            this.ctx.fillRect(point.x, point.y, 5, 5);
+        }
+    }
 }
