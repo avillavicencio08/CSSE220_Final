@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,7 +30,7 @@ public class StarterApp extends Application {
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
-        //Label titleLabel = new Label("CSSE220 Final Project");
+        Label titleLabel = new Label("CSSE220 Final Project - Wolphram Beta™");
         Label statusLabel = new Label("Starter app is ready.");
 
         Rectangle sky = new Rectangle(0, 0, 185, 50);
@@ -128,6 +129,39 @@ public class StarterApp extends Application {
     {
         return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
     }
+        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        //graphCanvas.drawLine(20, 30, 40, 50);
+        graphCanvas.drawLine(new Point2D(20, 30), new Point2D(40, 50));
+
+        // Some tests.
+        /*Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(400, 400);
+        points[1] = new Point2D(605, 605);
+        points[2] = new Point2D(400, 700);
+        graphCanvas.tempPlotName(points);*/
+
+        Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(100, 100);
+        points[1] = new Point2D(205, 205);
+        points[2] = new Point2D(300, 800);
+        graphCanvas.tempPlotName(points);
+
+        /*WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
+
+
+        // TODO 3: Arrange the title, message, and control in a clean layout.
+        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
+        root.setPadding(new Insets(20));
+
+
+
+        // TODO 4: Set the window title and size.
+        Scene scene = new Scene(root, 1920, 1080); //420, 220);
+        stage.setTitle("CSSE220 Team Starter - Wolphram Beta™");
+        stage.setScene(scene);
+        stage.show();
 
     public void DisplayOutput(String output,VBox inputOutput)
     {
@@ -141,6 +175,11 @@ public class StarterApp extends Application {
         {
             inputOutput.getChildren().remove(2);
         }
+        // TODO 5: Replace this starter view with your real app design.
+        /*for(int i = 0; i < 1000000000; ++i) {
+            ;
+        }
+        webEngine.executeScript("new Grapher();");*/
     }
 
     public static void main(String[] args) {

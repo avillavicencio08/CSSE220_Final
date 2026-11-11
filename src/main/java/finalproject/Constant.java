@@ -1,5 +1,7 @@
 package finalproject;
 
+import java.util.ArrayList;
+
 public class Constant implements Expression {
     int value;
     double dvalue;
@@ -32,5 +34,29 @@ public class Constant implements Expression {
     public double evaluate(double x) {
         if(decimal) return dvalue;
         else return value;
+    }
+
+    @Override
+    public Expression createChild(ArrayList<Object> args) {
+        return new Constant((Double) args.getFirst());
+    }
+
+    @Override
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList<>();
+        fields.add(this.dvalue);
+        return fields;
+    }
+
+    public boolean isDecimal() {
+        return decimal;
+    }
+
+    public double getDoubleValue() {
+        return dvalue;
+    }
+
+    public int getIntValue() {
+        return value;
     }
 }
