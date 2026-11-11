@@ -70,10 +70,24 @@ public class GraphCanvas extends Canvas {
     }
 
     // TODO: Split this method into one that only plots, and another that draws lines between each point.
-    public void drawPoints(Point2D[] points) {
+    /*public void drawPoints(Point2D[] points) {
+
+    }*/
+
+    public void plot(Point2D[] points) {
         for(int i = 0; points.length > i; ++i) {
             Point2D point = points[i];
             this.ctx.fillRect(point.x, point.y, 5, 5);
         }
     }
+
+    public void tempPlotName(Point2D[] points) {
+        for(int i = 1; points.length > i; ++i) {
+            Point2D start = points[i - 1];
+            Point2D end = points[i];
+            this.drawLine(start.x, start.y, end.x, end.y);
+        }
+    }
+
+    //public void regression
 }

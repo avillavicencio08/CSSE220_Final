@@ -29,10 +29,19 @@ public class StarterApp extends Application {
 
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         graphCanvas.drawLine(20, 30, 40, 50);
-        Point2D[] points = new Point2D[2];
-        points[0] = new Point2D(500, 500);
-        points[1] = new Point2D(505, 505);
-        graphCanvas.drawPoints(points);
+
+        // Some tests.
+        /*Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(400, 400);
+        points[1] = new Point2D(605, 605);
+        points[2] = new Point2D(400, 700);
+        graphCanvas.tempPlotName(points);*/
+
+        Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(100, 100);
+        points[1] = new Point2D(205, 205);
+        points[2] = new Point2D(300, 800);
+        graphCanvas.tempPlotName(points);
 
         /*WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
