@@ -43,7 +43,7 @@ public class StarterApp extends Application {
         Rectangle ground = new Rectangle(0, 50, 185, 2500);
         ground.setFill(Color.LIGHTGRAY);
 
-        Button diffrentiate = new Button("Diffrentiate");
+        Button differentiate = new Button("Differentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
         Label status = new Label("Wolfram Beta");
@@ -53,7 +53,7 @@ public class StarterApp extends Application {
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
 
-        diffrentiate.setOnAction(event -> {
+        differentiate.setOnAction(event -> {
             String output = Integrate(textField.getText());
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
@@ -131,7 +131,7 @@ public class StarterApp extends Application {
 //            }
         //probably dont need this yet, we have the textbox luckily
 
-        HBox controls = new HBox(15, diffrentiate, jump, reset);
+        HBox controls = new HBox(15, differentiate, jump, reset);
         controls.setPadding(new Insets(12));
         HBox header = new HBox(12, new Label("Lock in nolan!"));
         header.setPadding(new Insets(12));
