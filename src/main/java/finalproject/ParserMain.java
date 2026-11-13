@@ -323,7 +323,7 @@ public String oper(String OPE){
         InvTrig invTrig = new InvTrig(variable,TrigFunction.COS);
         Logarithm logarithm = new Logarithm(constant,variable);
         Exponential exponential = new Exponential(variable,constant);
-        Arithmetic arithmetic = new Arithmetic(variable,constant, Operation.ADD);
+        Arithmetic arithmetic = new Arithmetic((Expression) variable,constant, Operation.ADD);
 
         ParserMain m =new ParserMain(trig, invTrig, logarithm, arithmetic, exponential, constant, variable);
         toExpression t = new toExpression(m);
