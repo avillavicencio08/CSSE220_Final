@@ -38,7 +38,7 @@ public class StarterApp extends Application {
         Rectangle ground = new Rectangle(0, 50, 185, 2500);
         ground.setFill(Color.LIGHTGRAY);
 
-        Button start = new Button("Diffrentiate");
+        Button diffrentiate = new Button("Diffrentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
         Label status = new Label("Wolfram Beta");
@@ -48,11 +48,15 @@ public class StarterApp extends Application {
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
 
-        start.setOnAction(event -> {
+        diffrentiate.setOnAction(event -> {
             String output = Integrate(textField.getText());
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
         });
+
+        Rectangle startBlock = new Rectangle(0, 0, 10085, 5000);
+        sky.setFill(Color.WHITESMOKE);
+        Button startButton = new Button("Start");
 
         Pane myPane = new Pane(sky, ground,inputOutput);
         myPane.setFocusTraversable(true);
@@ -64,7 +68,18 @@ public class StarterApp extends Application {
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
         myPane.getChildren().add(bird.getView());
+
+        myPane.getChildren().add(startBlock);
+        myPane.getChildren().add(startButton);
+
+        //2,3,4(sourcing),7,9
+
         Pipes pipes = new Pipes();
+
+        startButton.setOnAction(event -> {
+           startBlock.setVisible(false);
+           startButton.setVisible(false);
+        });
 
         reset.setOnAction(event -> {
             ClearOutputs(inputOutput);
@@ -101,12 +116,14 @@ public class StarterApp extends Application {
 //            }
         //probably dont need this yet, we have the textbox luckily
 
-        HBox controls = new HBox(15, start, jump, reset);
+        HBox controls = new HBox(15, diffrentiate, jump, reset);
         controls.setPadding(new Insets(12));
         HBox header = new HBox(12, new Label("Lock in nolan!"));
         header.setPadding(new Insets(12));
 
         BorderPane rootPane = new BorderPane();
+
+
 
         rootPane.setCenter(myPane);
         rootPane.setTop(controls);
@@ -145,7 +162,6 @@ public class StarterApp extends Application {
         WebEngine webEngine = webView.getEngine();
         webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
 
-
         // TODO 3: Arrange the title, message, and control in a clean layout.
         VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
         root.setPadding(new Insets(20));
@@ -153,11 +169,10 @@ public class StarterApp extends Application {
 
 
         // TODO 4: Set the window title and size.
-        Scene scene = new Scene(root, 1920, 1080); //420, 220);
-        stage.setTitle("CSSE220 Team Starter - Wolphram Beta™");
-        stage.setScene(scene);
-        stage.show();
-
+        //Scene scene = new Scene(root, 1920, 1080); //420, 220);
+        //stage.setTitle("CSSE220 Team Starter - Wolphram Beta™");
+        //stage.setScene(scene);
+        //stage.show();
 
     }
 
