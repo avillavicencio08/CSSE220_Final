@@ -8,14 +8,35 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
+import java.io.FileNotFoundException;
+
 /** Owns the visual token, its local rotation pivot, and position. */
 public class FlappyToken {
     private final Group view;
     public double yVel = 0;
 
     public FlappyToken() {
-        Image image = new Image(FlappyToken.class.getResource("/images/FireflyFlappy.png").toExternalForm());
-        ImageView drone = new ImageView(image);
+        Image image = null;
+        try {
+            image = new Image(FlappyToken.class.getResource("/images/FireflyFlappy.png").toExternalForm());
+            if (image == null) {
+                throw new IllegalArgumentException("Image not found null exception");
+            }
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.getMessage());
+            //image = new Rectangle(25,25,25,25).get;
+        }
+        ImageView drone;
+        if (image != null) {
+            drone = new ImageView(image);
+        }
+        else {
+            //drone = Rectangle(0, 0, 185, 50);
+            //drone.setFill(Color.GREY);
+        }
+
         drone.setFitWidth(90);
         drone.setPreserveRatio(true);
         view = new Group(drone);

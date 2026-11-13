@@ -69,10 +69,6 @@ public class StarterApp extends Application {
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
-        myPane.getChildren().add(bird.getView());
-
-        myPane.getChildren().add(startBlock);
-        myPane.getChildren().add(startButton);
 
         Pipes pipes = new Pipes();
 
@@ -157,6 +153,11 @@ public class StarterApp extends Application {
         //graphCanvas.drawLine(20, 30, 40, 50);
         graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
+        myPane.getChildren().add(graphCanvas);
+        myPane.getChildren().add(bird.getView());
+        myPane.getChildren().add(startBlock);
+        myPane.getChildren().add(startButton);
+
         // Some tests.
         /*Point2D[] points = new Point2D[3];
         points[0] = new Point2D(400, 400);
@@ -175,8 +176,8 @@ public class StarterApp extends Application {
         webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
-        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
-        root.setPadding(new Insets(20));
+        //VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
+        //root.setPadding(new Insets(20));
 
 
 
