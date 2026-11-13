@@ -153,21 +153,21 @@ private ArrayList<Object> funcParse(String func){
             charN += 1;
             if (charN >= func.length() - 1) {
                 searching = false;
+
             }
 
             if (func.charAt(charN) == '(') {
                 pDepth += 1;
             } else if (func.charAt(charN) == ')') {
-                if (isDouble(current)){
-                        searching = false;
-                        parts.add(current);
-                    vars.put(current,new Constant(Double.parseDouble(current)));
-                }
+
 
                 pDepth -= 1;
             } else if (pDepth == 0) {
                 current = current + func.charAt(charN);
-
+                if (!searching && isDouble(current)){
+                    parts.add(current);
+                    vars.put(current,new Constant(Double.parseDouble(current)));
+                }
 
 
 
@@ -256,8 +256,8 @@ private ArrayList<Object> funcParse(String func){
         if (exp.getFields().size()==2){
             if (exp instanceof Exponential){
                 arr.add(reverseParse((Expression) (exp.getFields().get(0))));
-                if (exp.getFields().get(2) instanceof Constant && isInteger((String) (((Expression) exp.getFields().get(2)).getFields().get(0)))){
-                    arr.add(superscript((String) ((Expression) exp.getFields().get(2)).getFields().get(1)));
+                if (exp.getFields().get(1) instanceof Constant && isInteger((String) (((Expression) exp.getFields().get(1)).getFields().get(0)))){
+                    arr.add(superscript((String) ((Expression) exp.getFields().get(1)).getFields().get(0)));
                 }
 
                 else {
@@ -284,10 +284,26 @@ private ArrayList<Object> funcParse(String func){
             }
             //LOG CASE YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY
             else{
-                arr.add(reverseParse((Expression) exp.getFields().get(0)));
-                arr.add(oper(((Operation) (exp.getFields().get(2))).name()));
-                arr.add(reverseParse((Expression) (exp.getFields().get(1))));
+                if(((Expression) exp.getFields().get(0)) instanceof Constant && ((Expression) exp.getFields().get(1))instanceof Constant){
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("/"){
+                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))/(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    }
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("+"){
+                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))+(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    }
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("*"){
+                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))*(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    }
+                }
+                //simplifies constants
 
+
+
+                else{
+                    arr.add(reverseParse((Expression) exp.getFields().get(0)));
+                    arr.add(oper(((Operation) (exp.getFields().get(2))).name()));
+                    arr.add(reverseParse((Expression) (exp.getFields().get(1))));
+                }
             }
         }
 
@@ -311,12 +327,8 @@ public String oper(String OPE){
 
 
 
-
+/*
     public static void main(String[] args){
-
-
-
-
         Variable variable = new Variable("x");
         Constant constant = new Constant(0);
         Trig trig = new Trig(variable,TrigFunction.COS);
@@ -326,7 +338,7 @@ public String oper(String OPE){
         Arithmetic arithmetic = new Arithmetic(variable,constant, Operation.ADD);
 
         ParserMain m =new ParserMain(trig, invTrig, logarithm, arithmetic, exponential, constant, variable);
-        toExpression t = new toExpression(m);
+        ToExpression t = new ToExpression(m);
 
         ArrayList<Object> equation = new ArrayList<>();
         String function;
@@ -350,4 +362,5 @@ public String oper(String OPE){
         System.out.println(" ");
         System.out.println(printFunc(derived));
     }
+    */
 }
