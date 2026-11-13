@@ -63,7 +63,7 @@ public class StarterApp extends Application {
         sky.setFill(Color.WHITESMOKE);
         Button startButton = new Button("Start");
 
-        Pane myPane = new Pane(sky, ground,inputOutput);
+        Pane myPane = new Pane(sky, ground);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
         myPane.setPrefSize(500, 300);
@@ -155,8 +155,8 @@ public class StarterApp extends Application {
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
         graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
-
-        myPane.getChildren().add(graphCanvas);
+        HBox comboWGraph = new HBox(inputOutput,graphCanvas);
+        myPane.getChildren().add(comboWGraph);
         myPane.getChildren().add(bird.getView());
         myPane.getChildren().add(startBlock);
         myPane.getChildren().add(startButton);
