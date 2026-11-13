@@ -32,6 +32,24 @@ public class StarterApp extends Application {
     private Timeline flappy;
     private int score = 0;
     private int highScore = 0;
+    
+    static Differentiable classify(ArrayList<?> list) {
+        return switch (list.size()) {
+            case 3 -> {
+                String oper = ((String) list.get(1)).toLowerCase();
+                yield Operator.create(classify((ArrayList<?>) list.getFirst()), oper, classify((ArrayList<?>) list.getLast()));
+            }
+            case 2 -> {
+                String func = ((String) list.getFirst()).toLowerCase();
+                yield Func.create(func, classify((ArrayList<?>) list.getLast()));
+            }
+            case 1 -> {
+                if (list.getFirst() instanceof String && list.getFirst().equals("x")) yield new Variable("x");
+                yield Constant.create((String) list.getFirst());
+            }
+            default -> null;
+        };
+    }
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.

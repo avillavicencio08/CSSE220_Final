@@ -1,11 +1,8 @@
-package finalproject;
-
 public class Variable implements Differentiable {
     public String name;
 
     public Variable(String name) {
         this.name = name;
-        System.out.println("make "+this);
     }
     @Override
     public Differentiable derivative() {
@@ -17,7 +14,7 @@ public class Variable implements Differentiable {
     }
     @Override
     public boolean equals(Differentiable input) {
-        return true;
+        return input.getClass()==Variable.class&&((Variable) input).name.equals(this.name);
     }
 
     @Override

@@ -1,5 +1,4 @@
-package finalproject;
-
+import java.awt.geom.Arc2D;
 import java.util.Map;
 import java.util.function.Function ;
 
@@ -47,7 +46,6 @@ public class Func implements Differentiable{
     private Func(String name, Differentiable input) {
         this.name = name;
         this.input = input;
-        System.out.println("make "+this);
     }
 
     @Override
