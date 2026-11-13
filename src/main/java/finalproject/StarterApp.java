@@ -50,6 +50,9 @@ public class StarterApp extends Application {
             default -> null;
         };
     }
+    /*
+    Look at Differentiable Interface to see methods
+    */
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
