@@ -20,6 +20,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import finalproject.Point2D;
 import java.sql.Time;
+import finalproject.flappybird.Pipe;
+import finalproject.flappybird.Pipes;
+import finalproject.flappybird.FlappyToken;
 
 /**
  * Starter JavaFX app for CSSE220 Milestone 1.
