@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			html {
+				background-color: yellow;
+			}
+			table {
+				border-collapse: collapse;
+				border: 3px solid black;
+				border-radius=10px;
+			}
+			thead, tbody, tr, th, td {
+				border: 1px solid black !important;
+			}
+			canvas {
+				width: 500px;
+				height: 500px;
+			}
+		</style>
+		<script>
+			class Grapher {
+				#canvas;
+				#ctx;
+
+				constructor() {
+					this.#canvas = document.getElementById("graph");
+					this.#ctx = this.#canvas.getContext("2d");
+					this.#ctx.fillStyle = "#ffffff";
+					this.#ctx.fillRect(0, 0, 500, 500);
+					//this.#ctx.fillRect(1, 1, 499, 499);
+					this.#ctx.fillStyle = "#000000";
+				}
+
+				drawLine(x1, y1, x2, y2) {
+					this.#ctx.fillRect(x1, y1, 3, 3);
+					if(x1 > x2) {
+						let temp = x1;
+						x1 = x2;
+						x2 = temp;
+						temp = y1;
+						y1 = y2;
+						y2 = temp;
+					}
+					let slope = (y2 - y1)/(x2 - x1);
+					for(let i = 0; i < 2000; ++i) {//while(((((x1 - 5) < x2) != true) && (((x1 + 5) > x2) != true)) && ((((y1 - 5) < y2) != true) && (((y1 + 5) > y2) != true))) {
+						this.#ctx.fillRect(x1, y1, 3, 3);
+						x1 += 1;
+						y1 += slope;
+					}
+					this.#ctx.fillRect(x2, y2, 3, 3);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<p>Some text here</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Steps</th>
+					<th>Left Side of the Equation</th>
+					<th>Equality?</th>
+					<th>Right Side of the equation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>1</th>
+					<td>ax^2 + bx + c</td>
+					<td>=</td>
+					<td>0</td>
+				</tr>
+			</tbody>
+		</table>
+		<canvas id="graph" width=500 height=500>Your browser doesn't support the HTML Canvas element.</canvas>
+		<script>
+			/*let myGrapher = new Grapher();
+			myGrapher.drawLine(0, 0, 400, 400);
+			myGrapher.drawLine(400, 0, 0, 400);*/
+			let myCtx = document.getElementById("graph").getContext("2d");
+			myCtx.fillStyle = "#ffffff";
+			myCtx.fillRect(0, 0, 500, 500);
+			myCtx.fillStyle = "#000000";
+			x1 = 0;
+			y1 = 0;
+			x2 = 400;
+			y2 = 400;
+			//function fill(x1, y1, x2, y2) {
+					if(x1 > x2) {
+						let temp = x1;
+						x1 = x2;
+						x2 = temp;
+						temp = y1;
+						y1 = y2;
+						y2 = temp;
+					}
+					let slope = (y2 - y1)/(x2 - x1);
+					for(let i = 0; i < 2000; ++i) {//while(((((x1 - 5) < x2) != true) && (((x1 + 5) > x2) != true)) && ((((y1 - 5) < y2) != true) && (((y1 + 5) > y2) != true))) {
+						myCtx.fillRect(x1, y1, 3, 3);
+						x1 += 1;
+						y1 += slope;
+					}
+					myCtx.fillRect(x2, y2, 3, 3);
+			/*}
+			fill(0, 0, 400, 400);
+			fill(400, 0, 0, 400);*/
+		</script>
+		<!--<script src="script.js"></script>-->
+	</body>
+</html>
