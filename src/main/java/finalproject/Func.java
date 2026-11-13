@@ -47,7 +47,6 @@ public class Func implements Differentiable{
     private Func(String name, Differentiable input) {
         this.name = name;
         this.input = input;
-        System.out.println("make "+this);
     }
 
     @Override
