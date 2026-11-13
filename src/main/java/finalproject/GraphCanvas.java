@@ -105,8 +105,8 @@ public class GraphCanvas extends Canvas {
         }
     }
 
-    public Double eval(Differentiable o, Double x) {
-        return o.eval(x);
+    public Double eval(Expression o, Double x) {
+        return o.evaluate(x);
     }
 
     //public void regression

@@ -62,17 +62,6 @@ public class ParserMain {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public static void printNested(ArrayList<?> list) {
         System.out.print("[");
 
@@ -101,7 +90,7 @@ public class ParserMain {
             if (item instanceof String) {
                 func = func + item;
             } else if (item instanceof ArrayList<?>) {
-                func = func+printFunc((ArrayList<?>) item);
+                func = func + printFunc((ArrayList<?>) item);
             }
         }
         return func + ")";
@@ -132,17 +121,7 @@ public class ParserMain {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-private ArrayList<Object> funcParse(String func){
+public ArrayList<Object> funcParse(String func){
         ArrayList<Object> parts = new ArrayList<>();
     String current="";
         boolean searching = true;
@@ -229,19 +208,7 @@ private ArrayList<Object> funcParse(String func){
         return input;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    private ArrayList<Object> reverseParse(Expression exp){
+    public ArrayList<Object> reverseParse(Expression exp){
         ArrayList <Object> arr = new ArrayList <Object>();
         printNested(exp.getFields());
 
@@ -271,10 +238,6 @@ private ArrayList<Object> funcParse(String func){
             }
         }
 
-
-
-
-
         if (exp.getFields().size()==3){
             if (((Operation) ((exp.getFields()).get(2))).equals(Operation.DIVIDE) && exp.getFields().get(0) instanceof Logarithm && exp.getFields().get(2) instanceof Logarithm){
                 arr.add("log");
@@ -285,19 +248,17 @@ private ArrayList<Object> funcParse(String func){
             //LOG CASE YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY
             else{
                 if(((Expression) exp.getFields().get(0)) instanceof Constant && ((Expression) exp.getFields().get(1))instanceof Constant){
-                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("/"){
-                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))/(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("/")) {
+                        arr.add( String.valueOf((Double.parseDouble((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))/(Double.parseDouble((String)((Expression) exp.getFields().get(0)).getFields().get(0)))));
                     }
-                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("+"){
-                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))+(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("+")) {
+                        arr.add( String.valueOf((Double.parseDouble((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))+(Double.parseDouble((String)((Expression) exp.getFields().get(0)).getFields().get(0)))));
                     }
-                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("*"){
-                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))*(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("*")) {
+                        arr.add( String.valueOf((Double.parseDouble((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))*(Double.parseDouble((String)((Expression) exp.getFields().get(0)).getFields().get(0)))));
                     }
                 }
                 //simplifies constants
-
-
 
                 else{
                     arr.add(reverseParse((Expression) exp.getFields().get(0)));
