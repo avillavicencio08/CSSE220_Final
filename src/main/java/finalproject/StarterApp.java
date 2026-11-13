@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import finalproject.flappybird.FlappyToken;
 import finalproject.flappybird.Pipes;
+import finalproject.Point2D;
 
 /** Derivative calculator with a Flappy Bird easter egg. */
 public class StarterApp extends Application {
@@ -67,6 +68,11 @@ public class StarterApp extends Application {
 
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(100,100);
+        points[1] = new Point2D(205,205);
+        points[2] = new Point2D(300,800);
+        graphCanvas.tempPlotName(points);
         HBox comboWGraph = new HBox(inputOutput,graphCanvas);
         myPane.getChildren().add(comboWGraph);
 
