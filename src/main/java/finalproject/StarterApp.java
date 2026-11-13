@@ -135,12 +135,13 @@ public class StarterApp extends Application {
         stage.show();
         myPane.requestFocus();
 
-
+        /*
         // TODO 2: Add your first interactive control (button, text field, etc.).
         Button actionButton = new Button("Tap to update status");
         actionButton.setOnAction(event -> {
             statusLabel.setText("Your team has launched the shared starter.");
         });
+        /*
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
         graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
@@ -157,12 +158,15 @@ public class StarterApp extends Application {
         points[2] = new Point2D(400, 700);
         graphCanvas.tempPlotName(points);*/
 
+        /*
         Point2D[] points = new finalproject.Point2D[3];
         points[0] = new finalproject.Point2D(100, 100);
         points[1] = new finalproject.Point2D(205, 205);
         points[2] = new finalproject.Point2D(300, 800);
         graphCanvas.tempPlotName(points);
 
+
+         */
         /*WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
         webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
