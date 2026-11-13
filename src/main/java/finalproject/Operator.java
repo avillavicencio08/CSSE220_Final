@@ -1,7 +1,6 @@
-package finalproject;
-
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.regex.*;
 
 public class Operator implements Differentiable {
     public Differentiable input1;
@@ -33,7 +32,6 @@ public class Operator implements Differentiable {
 
         switch (name) {
             case "*":
-                System.out.println("*  "+input1+name+input2);
                 if (input1 instanceof Constant) {
                     switch (((Constant) input1).name) {
                         case "0" -> {return Constant.create("0");}
@@ -69,8 +67,10 @@ public class Operator implements Differentiable {
                 }
 
                 if (input2 instanceof Operator) {
-                    //a*(b/c)->(a*b)/c
-                    if (((Operator) input2).name.equals("/")) return Operator.create(Operator.create(((Operator) input2).input1, "*", input1), "/", ((Operator) input2).input2);
+                    //1*(2.1/2.2)->(1*2.1)/2.2
+                    if (((Operator) input2).name.equals("/")) {
+                        return Operator.create(Operator.create(input1, "*", ((Operator) input2).input1), "/", ((Operator) input2).input2);
+                    }
                     //a*(a*b) or a*(b*a)->b*(a^2)
                     if (input1.equals(((Operator) input2).input1)) return Operator.create(((Operator) input2).input2, "*", Operator.create(input1, "^", Constant.create("2")));
                     if (input1.equals(((Operator) input2).input2)) return Operator.create(((Operator) input2).input1, "*", Operator.create(input1, "^", Constant.create("2")));
@@ -81,26 +81,23 @@ public class Operator implements Differentiable {
                 //(a*(b^n))*b->a*(b^(n+1))
                 break;
             case "+":
-                System.out.println("+  "+input1+name+input2);
                 if (input1 instanceof Constant&&((Constant) input1).name.equals("0")) return input2;
                 if (input2 instanceof Constant&&((Constant) input2).name.equals("0")) return input1;
-                if (input2 instanceof Func &&((Func) input2).name.equals("-")) return Operator.create(input1, "-", ((Func) input2).input);
-                if (input1 instanceof Func &&((Func) input1).name.equals("-")) return Operator.create(input2, "-", ((Func) input1).input);
+                if (input2 instanceof Func&&((Func) input2).name.equals("-")) return Operator.create(input1, "-", ((Func) input2).input);
+                if (input1 instanceof Func&&((Func) input1).name.equals("-")) return Operator.create(input2, "-", ((Func) input1).input);
                 if (input1.equals(input2)) return Operator.create(Constant.create("2"), "*", input1);
                 if (input1 instanceof Operator&&input2 instanceof Operator&&((Operator) input1).name.equals("log")&&((Operator) input2).name.equals("log")&&((Operator) input1).input1.equals(((Operator) input2).input1))
                     return Operator.create(((Operator) input1).input1, "log", Operator.create(((Operator) input1).input2, "*", ((Operator) input2).input2));
                 break;
             case "-":
-                System.out.println("-  "+input1+name+input2);
                 if (input1 instanceof Constant&&((Constant) input1).name.equals("0")) return Func.create("-", input2);
                 if (input2 instanceof Constant&&((Constant) input2).name.equals("0")) return input1;
-                if (input2 instanceof Func &&((Func) input2).name.equals("-")) return Operator.create(input1, "+", ((Func) input2).input);
+                if (input2 instanceof Func&&((Func) input2).name.equals("-")) return Operator.create(input1, "+", ((Func) input2).input);
                 if (input1.equals(input2)) return Constant.create("0");
                 if (input1 instanceof Operator&&input2 instanceof Operator&&((Operator) input1).name.equals("log")&&((Operator) input2).name.equals("log")&&((Operator) input1).input1.equals(((Operator) input2).input1))
                     return Operator.create(((Operator) input1).input1, "log", Operator.create(((Operator) input1).input2, "/", ((Operator) input2).input2));
                 break;
             case "/":
-                System.out.println("/  "+input1+name+input2);
                 if (input2 instanceof Constant) {
                     if (((Constant) input2).name.equals("1")) return input1;
                     if (((Constant) input2).name.equals("0")) throw new ArithmeticException("Divide by 0");
@@ -125,18 +122,23 @@ public class Operator implements Differentiable {
                         }
                     }
                     switch (((Operator) input1).name) {
-
                         case "*":
                             //(a*b)/a or (b*a)/a->b
                             if (((Operator) input1).input1.equals(input2)) return ((Operator) input1).input2;
                             if (((Operator) input1).input2.equals(input2)) return ((Operator) input1).input1;
+                            //((a^b)*c)/a or (c*(a^b))/a->(a^(b-1))*c
+                            if (((Operator) input1).input1 instanceof Operator&&((Operator) ((Operator) input1).input1).name.equals("^")&&((Operator) ((Operator) input1).input1).input1.equals(input2))
+                                return Operator.create(((Operator) input1).input2, "*", Operator.create(input2, "^", Operator.create(((Operator) ((Operator) input1).input1).input2, "-", Constant.create("1"))));
+                            if (((Operator) input1).input2 instanceof Operator&&((Operator) ((Operator) input1).input2).name.equals("^")&&((Operator) ((Operator) input1).input2).input1.equals(input2))
+                                return Operator.create(((Operator) input1).input1, "*", Operator.create(input2, "^", Operator.create(((Operator) ((Operator) input1).input2).input2, "-", Constant.create("1"))));
+                            break;
                         case "/":
                             //(a/b)/c->a/(b*c)
                             return Operator.create(((Operator) input1).input1, "/", Operator.create(((Operator) input1).input2, "*", input2));
                         case "^":
                             //(a^n)/a->a^(n-1)
-                            if (((Operator) input1).input1.equals(input2))
-                                return Operator.create(input2, "^", Operator.create(((Operator) input1).input2, "-", Constant.create("1")));
+                            if (((Operator) input1).input1.equals(input2)) return Operator.create(input2, "^", Operator.create(((Operator) input1).input2, "-", Constant.create("1")));
+                            break;
                     }
                 }
                 if (input2 instanceof Operator) {
@@ -148,16 +150,17 @@ public class Operator implements Differentiable {
                             //a/(a*b) or a/(b*a)->1/b
                             if (input1.equals(((Operator) input2).input1)) return Operator.create(Constant.create("1"), "/", ((Operator) input2).input2);
                             if (input1.equals(((Operator) input2).input2)) return Operator.create(Constant.create("1"), "/", ((Operator) input2).input1);
+                            break;
                         case "^":
                             //a/(a^n)->a^(1-n)
                             if (input1.equals(((Operator) input2).input1)) return Operator.create(input1, "^", Operator.create(Constant.create("1"), "-", ((Operator) input2).input2));
                             //b/(a^(-(n))->b*(a^(n))
-                            if (((Operator) input2).input2 instanceof Func &&((Func)(((Operator) input2).input2)).name.equals("-")) return Operator.create(input1, "*", Operator.create(((Operator) input2).input1, "^", ((Func)((Operator) input2).input2).input));
+                            if (((Operator) input2).input2 instanceof Func&&((Func)(((Operator) input2).input2)).name.equals("-")) return Operator.create(input1, "*", Operator.create(((Operator) input2).input1, "^", ((Func)((Operator) input2).input2).input));
+                            break;
                     }
                 }
                 break;
             case "^":
-                System.out.println("^  "+input1+name+input2);
                 if (input2 instanceof Constant) {
                     if (((Constant) input2).name.equals("1")) return input1;
                     if (((Constant) input2).name.equals("0")&&!(input1 instanceof Constant&&((Constant) input1).name.equals("0"))) return Constant.create("1");
@@ -184,7 +187,7 @@ public class Operator implements Differentiable {
                 }
                 break;
             case "log":
-                System.out.println("log  "+input1+name+input2);
+
                 if (input1 instanceof Constant) {
                     if (((Constant) input1).name.equals("1")) throw new ArithmeticException("log with base 1 undefined");
                     if (((Constant) input1).name.equals("0")) throw new ArithmeticException("log with base 0 undefined");
@@ -206,16 +209,13 @@ public class Operator implements Differentiable {
         this.input1 = input1;
         this.name = name;
         this.input2 = input2;
-        System.out.println("make "+this);
     }
     @Override
     public Differentiable derivative() {
-        System.out.println("derive "+this);
         if (isConstant()) {
-            System.out.println("is 0");
+
             return Constant.create("0");
         }
-        System.out.println("is "+derivatives.get(name).apply(input1, input2));
         return derivatives.get(name).apply(input1, input2);
     }
     @Override
