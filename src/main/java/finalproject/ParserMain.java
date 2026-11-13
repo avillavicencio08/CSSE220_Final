@@ -150,26 +150,26 @@ private ArrayList<Object> funcParse(String func){
         int charN =-1;
         int charSave;
         while (searching) {
-            charN += 1;
-            if (charN >= func.length() - 1) {
-                searching = false;
-            }
 
-            if (func.charAt(charN) == '(') {
-                pDepth += 1;
-            } else if (func.charAt(charN) == ')') {
+            charN += 1;
+            if (charN >= func.length()) {
+                searching = false;
                 if (isDouble(current)){
-                        searching = false;
-                        parts.add(current);
+                    System.out.println("we're here");
+                    parts.add(current);
                     vars.put(current,new Constant(Double.parseDouble(current)));
                 }
+            }
+            else if (func.charAt(charN) == '(') {
+                pDepth += 1;
+            } else if (func.charAt(charN) == ')') {
 
                 pDepth -= 1;
             } else if (pDepth == 0) {
                 current = current + func.charAt(charN);
 
 
-
+                System.out.println(current);
 
 
 
@@ -256,17 +256,17 @@ private ArrayList<Object> funcParse(String func){
         if (exp.getFields().size()==2){
             if (exp instanceof Exponential){
                 arr.add(reverseParse((Expression) (exp.getFields().get(0))));
-                if (exp.getFields().get(2) instanceof Constant && isInteger((String) (((Expression) exp.getFields().get(2)).getFields().get(0)))){
+                if (exp.getFields().get(1) instanceof Constant && isInteger((String) (((Expression) exp.getFields().get(2)).getFields().get(0)))){
                     arr.add(superscript((String) ((Expression) exp.getFields().get(2)).getFields().get(1)));
                 }
 
                 else {
                     arr.add("^");
-                    arr.add(reverseParse((Expression)(exp.getFields().get(2))));
+                    arr.add(reverseParse((Expression)(exp.getFields().get(1))));
                 }
             }
             else {
-                arr.add(((TrigFunction) (exp.getFields().get(1))).name().toLowerCase());
+                arr.add(((TrigFunction) (exp.getFields().get(1))));
                 arr.add(reverseParse((Expression) exp.getFields().get(0)));
             }
         }

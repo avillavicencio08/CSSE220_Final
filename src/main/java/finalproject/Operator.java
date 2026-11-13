@@ -1,4 +1,4 @@
-package finalproject;
+/**package finalproject;
 
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -168,7 +168,8 @@ public class Operator implements Differentiable {
                     if (((Constant) input1).name.equals("e")) return Func.create("exp", input2);
                 }
                 if (input1 instanceof Operator) {
-                    //(a*/b)^c->(a^c)*/(b^c)
+                    //(a**//**b)^c->(a^c)*//**(b^c)
+
                     if (((Operator) input1).name.equals("*")||((Operator) input1).name.equals("/")) return Operator.create(Operator.create(((Operator) input1).input1, "^", input2), ((Operator) input1).name, Operator.create(((Operator) input1).input2, "^", input2));
                     //(a^b)^c->a^(b*c)
                     if (((Operator) input1).name.equals("^")) return Operator.create(((Operator) input1).input1, "^", Operator.create(((Operator) input1).input2, "*", input2));
@@ -249,3 +250,4 @@ public class Operator implements Differentiable {
         };
     }
 }
+**/

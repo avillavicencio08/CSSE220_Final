@@ -26,8 +26,8 @@ public class toExpression {
 
 
         if (list.size()==3){
-            if ((three.get(list.get(0))) instanceof Exponential) {
-                return three.get(list.get(0)).createChild(new ArrayList<Object>(List.of(express((ArrayList<Object>) (list.get(0)),one,two,three), express((ArrayList<Object>) (list.get(2)),one,two,three))));
+            if ((three.get(list.get(1))) instanceof Exponential) {
+                return three.get(list.get(1)).createChild(new ArrayList<Object>(List.of(express((ArrayList<Object>) (list.get(0)),one,two,three), express((ArrayList<Object>) (list.get(2)),one,two,three))));
             }
             return ((Expression) three.get(list.get(1))).createChild(new ArrayList<Object>(List.of(express((ArrayList<Object>) list.get(0),one,two,three), express((ArrayList<Object>) list.get(2),one,two,three), toEnum((String) list.get(1)))));
         }

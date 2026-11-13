@@ -1,4 +1,4 @@
-package finalproject;
+/**package finalproject;
 
 import java.util.Map;
 import java.util.function.Function ;
@@ -90,4 +90,4 @@ public class Func implements Differentiable{
         return false;
     }
 }
-
+**/
