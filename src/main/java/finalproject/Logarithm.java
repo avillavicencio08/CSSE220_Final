@@ -18,34 +18,24 @@ public class Logarithm implements Expression {
 
     @Override
     public boolean isConstant() {
-        return (base.isConstant() && val.isConstant());
+        return base.isConstant() && val.isConstant();
     }
 
     @Override
     public Expression calculateDerivative() {
-        // we gonna ignore the case where base is variable
-        // cause what the actual fuck
-        // if that happens someone before us didn't do their job
+        if (isConstant()) return Ops.c(0);
 
-        if(isConstant()) return null;
-
-        if(base.isConstant() && !val.isConstant()) {
-            Expression u = new Arithmetic(val, new Logarithm(new Constant(Math.E), base), Operation.MULTIPLY);
-            Expression v = val.calculateDerivative();
-
-            return new Arithmetic(v,new Exponential(u, new Constant(-1)), Operation.MULTIPLY);
-        } else {
-            // what the fuck.
-            // krill yourself
-            throw new ArithmeticException("log base should not be variable.");
+        // d/dx log_b(v) = v' / (v ln b). A variable base is rewritten as ln v / ln b by the parser.
+        if (!base.isConstant()) {
+            throw new ArithmeticException("log base must not depend on x.");
         }
+        Expression u = Ops.mul(val, new Logarithm(Ops.c(Math.E), base));
+        return Ops.mul(val.calculateDerivative(), Ops.pow(u, -1));
     }
-
-
 
     @Override
     public double evaluate(double x) {
-        return 0;
+        return Math.log(val.evaluate(x)) / Math.log(base.evaluate(x));
     }
 
     @Override
@@ -61,11 +51,6 @@ public class Logarithm implements Expression {
         return fields;
     }
 
-    public Expression getBase() {
-        return base;
-    }
-
-    public Expression getInput() {
-        return val;
-    }
+    public Expression getBase() { return base; }
+    public Expression getInput() { return val; }
 }

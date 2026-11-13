@@ -26,45 +26,37 @@ public class Arithmetic implements Expression {
 
     @Override
     public Expression calculateDerivative() {
-        if(isConstant()) return null;
+        if (isConstant()) return new Constant(0); // FIX: was null
 
-        if(op == Operation.ADD) {
-            if(a.isConstant()) return b.calculateDerivative();
-            else if(b.isConstant()) return a.calculateDerivative();
+        if (op == Operation.ADD) {
+            if (a.isConstant()) return b.calculateDerivative();
+            else if (b.isConstant()) return a.calculateDerivative();
 
             return new Arithmetic(a.calculateDerivative(), b.calculateDerivative(), op);
-        } else if(op == Operation.MULTIPLY) {
-            Expression da;
-            Expression db;
-
+        } else if (op == Operation.MULTIPLY) {
             // coefficient rule: [nf]' = n(f')
-            if(a.isConstant()) return new Arithmetic(a, b.calculateDerivative(), Operation.MULTIPLY);
-            else if(b.isConstant()) return new Arithmetic(b, a.calculateDerivative(), Operation.MULTIPLY);
+            if (a.isConstant()) return new Arithmetic(a, b.calculateDerivative(), Operation.MULTIPLY);
+            else if (b.isConstant()) return new Arithmetic(b, a.calculateDerivative(), Operation.MULTIPLY);
 
             // product rule: [uv]' = uv' + vu'
-            da = new Arithmetic(a, b.calculateDerivative(), Operation.MULTIPLY);
-            db = new Arithmetic(b, a.calculateDerivative(), Operation.MULTIPLY);
+            Expression da = new Arithmetic(a, b.calculateDerivative(), Operation.MULTIPLY);
+            Expression db = new Arithmetic(b, a.calculateDerivative(), Operation.MULTIPLY);
 
             return new Arithmetic(da, db, Operation.ADD);
-        } else if(op == Operation.DIVIDE) {
-            // this one is incredibly annoying.
-            Expression da;
-            Expression db;
-            Expression dc;
-
-            if(a.isConstant()) {
-                // da is constant. db isn't. convert to exponential then power rule.
+        } else if (op == Operation.DIVIDE) {
+            if (a.isConstant()) {
+                // constant numerator: rewrite as a * b^-1, then power rule.
                 Expression d = new Exponential(b, new Constant(-1));
 
                 return new Arithmetic(a, d.calculateDerivative(), Operation.MULTIPLY);
-            } else if(b.isConstant()) {
-                // classic. just coefficient rule.
+            } else if (b.isConstant()) {
+                // constant denominator: coefficient rule.
                 return new Arithmetic(a.calculateDerivative(), b, Operation.DIVIDE);
             } else {
-                // quotient rule.
-                da = new Arithmetic(a.calculateDerivative(), b, Operation.MULTIPLY);
-                db = new Arithmetic(new Arithmetic(b.calculateDerivative(), a, Operation.MULTIPLY), new Constant(-1), Operation.MULTIPLY);
-                dc = new Exponential(b, new Constant(2));
+                // quotient rule: (a'b - b'a) / b^2
+                Expression da = new Arithmetic(a.calculateDerivative(), b, Operation.MULTIPLY);
+                Expression db = new Arithmetic(new Arithmetic(b.calculateDerivative(), a, Operation.MULTIPLY), new Constant(-1), Operation.MULTIPLY);
+                Expression dc = new Exponential(b, new Constant(2));
 
                 return new Arithmetic(new Arithmetic(da, db, Operation.ADD), dc, Operation.DIVIDE);
             }
@@ -100,15 +92,7 @@ public class Arithmetic implements Expression {
         return fields;
     }
 
-    public Expression getA() {
-        return a;
-    }
-
-    public Expression getB() {
-        return b;
-    }
-
-    public Operation getOperation() {
-        return op;
-    }
+    public Expression getA() { return a; }
+    public Expression getB() { return b; }
+    public Operation getOperation() { return op; }
 }
