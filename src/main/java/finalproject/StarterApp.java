@@ -27,6 +27,8 @@ import java.sql.Time;
  */
 public class StarterApp extends Application {
     private Timeline flappy;
+    private int score = 0;
+    private int highScore = 0;
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
@@ -84,8 +86,11 @@ public class StarterApp extends Application {
         reset.setOnAction(event -> {
             ClearOutputs(inputOutput);
             flappy.stop();
+            score = 0;
             bird.getView().setVisible(false);
             pipes.ClearAllPipes(myPane);
+            fillerDisp.setVisible(false);
+
         });
 
         flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
@@ -94,17 +99,26 @@ public class StarterApp extends Application {
                 bird.getView().setVisible(true);
             }
             bird.step();
+            score += 1;
+            if (score > highScore)
+            {
+                highScore = score;
+            }
+            fillerDisp.setText("Score: " + score + "  High Score: " + highScore);
             if (!pipes.step(myPane,bird.getView().getTranslateY(),bird.getView().getTranslateX())) //checking if we have lost
             {
                 pipes.ClearAllPipes(myPane);
                 bird.reset();
                 bird.getView().setVisible(false);
                 flappy.stop();
+                score = 0;
+                fillerDisp.setVisible(false);
             }
         }));
         flappy.setCycleCount(Timeline.INDEFINITE);
         jump.setOnAction( event -> {
             flappy.play();
+            fillerDisp.setVisible(true);
             bird.yVel = 3;
         });
 
