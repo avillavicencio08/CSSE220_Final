@@ -105,8 +105,8 @@ public class GraphCanvas extends Canvas {
         }
     }
 
-    public void eval(Object o) {
-        // TODO: I think I now know why something like this is needed.
+    public Double eval(Differentiable o, Double x) {
+        return o.eval(x);
     }
 
     //public void regression

@@ -1,48 +1,32 @@
 package finalproject;
 
-import java.util.ArrayList;
-
-public class Variable implements Expression {
-    private String name;
+public class Variable implements Differentiable {
+    public String name;
 
     public Variable(String name) {
         this.name = name;
+        System.out.println("make "+this);
     }
-
     @Override
-    public double[] getDomain() {
-        return new double[]{Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
+    public Differentiable derivative() {
+        return Constant.create("1");
     }
-
     @Override
     public boolean isConstant() {
         return false;
     }
-
     @Override
-    public Expression calculateDerivative() {
-        return new Constant(1);
+    public boolean equals(Differentiable input) {
+        return true;
     }
 
     @Override
-    public double evaluate(double x) {
-        return x;
-    }
-
-    @Override
-    public Expression createChild(ArrayList<Object> args) {
-        return new Variable((String) args.getFirst());
-    }
-
-    @Override
-    public ArrayList<Object> getFields() {
-        ArrayList<Object> fields = new ArrayList<>();
-        fields.add(name);
-        return fields;
-    }
-
-
-    public String getName() {
+    public String toString() {
         return name;
+    }
+
+    @Override
+    public Double eval(Double x) {
+        return x;
     }
 }
