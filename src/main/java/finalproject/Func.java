@@ -14,7 +14,7 @@ public class Func implements Differentiable{
             Map.entry("arccos", (x) -> Func.create("neg", Operator.create(Operator.create(Constant.create("1"), "-", Operator.create(x, "^", Constant.create("2"))), "^", Constant.create("-0.5")))),
             Map.entry("arctan", (x) -> Operator.create(Constant.create("1"), "/", Operator.create(Constant.create("1"), "+", Operator.create(x, "^", Constant.create("2"))))),
             Map.entry("ln", (x) -> Operator.create(Constant.create("1"), "/", x)),
-            Map.entry("-", (_) -> Constant.create("-1")),
+            Map.entry("-", (x) -> Constant.create("-1")),
             Map.entry("exp", (x) -> Func.create("exp", x))
     );
     public static Differentiable create(String name, Differentiable input) {
