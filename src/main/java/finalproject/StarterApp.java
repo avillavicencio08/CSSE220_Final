@@ -74,8 +74,6 @@ public class StarterApp extends Application {
         myPane.getChildren().add(startBlock);
         myPane.getChildren().add(startButton);
 
-        //4(sourcing),7,9
-
         Pipes pipes = new Pipes();
 
         startButton.setOnAction(event -> {
