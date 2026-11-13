@@ -24,7 +24,6 @@ public class Constant implements Differentiable{
             this.isNumber = false;
             this.name = name;
         }
-        System.out.println("make "+this);
     }
 
     @Override
