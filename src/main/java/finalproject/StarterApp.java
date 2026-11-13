@@ -55,7 +55,7 @@ public class StarterApp extends Application {
         Rectangle startBlock = new Rectangle(0, 0, 10085, 5000);
         Button startButton = new Button("Start");
 
-        Pane myPane = new Pane(sky, ground, inputOutput);
+        Pane myPane = new Pane(sky, ground);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
         myPane.setPrefSize(500, 300);
@@ -64,6 +64,12 @@ public class StarterApp extends Application {
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
+
+        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        HBox comboWGraph = new HBox(inputOutput,graphCanvas);
+        myPane.getChildren().add(comboWGraph);
+
         myPane.getChildren().add(bird.getView());
 
         myPane.getChildren().add(startBlock);
