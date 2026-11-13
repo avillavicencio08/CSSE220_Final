@@ -74,7 +74,7 @@ public class StarterApp extends Application {
         myPane.getChildren().add(startBlock);
         myPane.getChildren().add(startButton);
 
-        //2,3,4(sourcing),7,9
+        //2,4(sourcing),7,9
 
         Pipes pipes = new Pipes();
 
@@ -105,7 +105,7 @@ public class StarterApp extends Application {
                 highScore = score;
             }
             fillerDisp.setText("Score: " + score + "  High Score: " + highScore);
-            if (!pipes.step(myPane,bird.getView().getTranslateY(),bird.getView().getTranslateX())) //checking if we have lost
+            if (!pipes.step(myPane,bird.getView().getTranslateY(),bird.getView().getTranslateX(),score)) //checking if we have lost
             {
                 pipes.ClearAllPipes(myPane);
                 bird.reset();

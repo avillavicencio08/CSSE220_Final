@@ -13,13 +13,19 @@ public class Pipe {
     private int gap = 10;
     private int height;
     private final Group view;
-    private static final int Gamespeed = 1;
-    public Pipe(int height, int gap,double sceneWidth,double sceneHeight)
+    private static double Gamespeed = 1;
+    public static void updateSpeed(double speed)
+    {
+        Gamespeed = speed;
+    }
+    public Pipe(int height, int gap,double sceneWidth,double sceneHeight,Color color)
     {
         this.height = height;
         this.gap = gap;
         Rectangle pipeTop = new Rectangle(sceneWidth, 0, 50, height-gap);
+        pipeTop.setFill(color);
         Rectangle pipeBottom = new Rectangle(sceneWidth, height + gap, 50, sceneHeight-(height + gap));
+        pipeBottom.setFill(color);
         view = new Group(pipeTop,pipeBottom);
     }
     public void step()

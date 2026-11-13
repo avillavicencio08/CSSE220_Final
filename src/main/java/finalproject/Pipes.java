@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import org.w3c.dom.css.RGBColor;
 
 import java.util.ArrayList;
 
@@ -19,9 +20,9 @@ public class Pipes {
     {
         allPipes = new ArrayList<>();
     }
-    public boolean step(javafx.scene.layout.Pane canvas,double birdY,double birdX)
+    public boolean step(javafx.scene.layout.Pane canvas,double birdY,double birdX,int score)
     {
-
+        Pipe.updateSpeed(1 + score/1000);
         for(int i = 0; i < allPipes.size();i++)
         {
             allPipes.get(i).step();
@@ -46,15 +47,17 @@ public class Pipes {
         pipeTime += 1;
         if (pipeTime > 400)
         {
-            SummonPipe(canvas);
+            SummonPipe(canvas,score);
             pipeTime = 0;
         }
         return true;
     }
-    public void SummonPipe(javafx.scene.layout.Pane canvas)
+    public void SummonPipe(javafx.scene.layout.Pane canvas,int score)
     {
         double ran = Math.random() * canvas.getHeight();// * 2000;
-        Pipe p1 = new Pipe((int)ran,50, canvas.getWidth(), canvas.getHeight());
+        double dissapearing = 1/(1 +(score/5000));
+        Color turnRed = new Color(1,dissapearing,dissapearing,1);
+        Pipe p1 = new Pipe((int)ran,50, canvas.getWidth(), canvas.getHeight(),turnRed);
         allPipes.add(p1);
         canvas.getChildren().add(p1.getView());
         //view = new Group(view,p1.getView());
