@@ -27,11 +27,34 @@ import finalproject.flappybird.FlappyToken;
 /**
  * Starter JavaFX app for CSSE220 Milestone 1.
  * Replace this simple window with the first version of your project.
- */
+**/
 public class StarterApp extends Application {
     private Timeline flappy;
     private int score = 0;
     private int highScore = 0;
+
+    /**
+    static Differentiable classify(ArrayList<?> list) {
+        return switch (list.size()) {
+            case 3 -> {
+                String oper = ((String) list.get(1)).toLowerCase();
+                yield Operator.create(classify((ArrayList<?>) list.getFirst()), oper, classify((ArrayList<?>) list.getLast()));
+            }
+            case 2 -> {
+                String func = ((String) list.getFirst()).toLowerCase();
+                yield Func.create(func, classify((ArrayList<?>) list.getLast()));
+            }
+            case 1 -> {
+                if (list.getFirst() instanceof String && list.getFirst().equals("x")) yield new Variable("x");
+                yield Constant.create((String) list.getFirst());
+            }
+            default -> null;
+        };
+    }
+     **/
+    /*
+    Look at Differentiable Interface to see methods
+    */
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
@@ -194,7 +217,23 @@ public class StarterApp extends Application {
 
     public String Integrate(String input)
     {
-        return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
+        // fml
+        Variable variable = new Variable("x");
+        Constant constant = new Constant(0);
+        Trig trig = new Trig(variable,TrigFunction.COS);
+        InvTrig invTrig = new InvTrig(variable,TrigFunction.COS);
+        Logarithm logarithm = new Logarithm(constant,variable);
+        Exponential exponential = new Exponential(variable,constant);
+        Arithmetic arithmetic = new Arithmetic(variable,constant, Operation.ADD);
+
+        ParserMain m =new ParserMain(trig, invTrig, logarithm, arithmetic, exponential, constant, variable);
+        ToExpression t = new ToExpression(m);
+
+        Expression e = t.express(m.funcParse(input), m.vars,m.oneInputFuncs,m.twoInputFuncs);
+
+        Expression diff = e.calculateDerivative();
+
+        return ParserMain.printFunc(m.reverseParse(diff));
     }
 
     public void DisplayOutput(String output,VBox inputOutput)

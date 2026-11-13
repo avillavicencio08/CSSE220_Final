@@ -1,4 +1,4 @@
-import java.beans.Expression;
+package finalproject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -10,7 +10,7 @@ public class ParserMain {
 
     public HashMap<String, Expression> vars;
 
-    public ParserMain(){
+    public ParserMain( Trig trig, InvTrig invTrig, Logarithm logarithm, Arithmetic arithmetic, Exponential exponential, Constant constant, Variable variable){
         this.oneInputFuncs = new HashMap<>();
 
         this.twoInputFuncs = new HashMap<>();
@@ -43,12 +43,12 @@ public class ParserMain {
 
 
 
-        twoInputFuncs.put("*", arithmetic);
         twoInputFuncs.put("^", exponential);
+        twoInputFuncs.put("*", arithmetic);
         twoInputFuncs.put("+", arithmetic);
          twoInputFuncs.put("-", arithmetic);
          twoInputFuncs.put("/", arithmetic);
-         twoInputFuncs.put("log", logarithm);
+         twoInputFuncs.put("LOG", logarithm);
 
 
 
@@ -61,17 +61,6 @@ public class ParserMain {
         vars.put("x", variable);
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
     public static void printNested(ArrayList<?> list) {
         System.out.print("[");
@@ -101,7 +90,7 @@ public class ParserMain {
             if (item instanceof String) {
                 func = func + item;
             } else if (item instanceof ArrayList<?>) {
-                printFunc((ArrayList<?>) item);
+                func = func + printFunc((ArrayList<?>) item);
             }
         }
         return func + ")";
@@ -119,22 +108,20 @@ public class ParserMain {
     }
     public static boolean isInteger(String s) {
         try {
-            Int.parseInt(s);
+            Integer.parseInt(s);
             return true;
         } catch (NumberFormatException e) {
+            if (isDouble(s)){
+                double n = Double.parseDouble(s);
+
+                return Math.abs(n - Math.floor(n)) <= Math.pow(10.0, -8.0);
+            }
+
             return false;
         }
     }
 
-
-
-
-
-
-
-
-
-private ArrayList<Object> funcParse(String func){
+public ArrayList<Object> funcParse(String func){
         ArrayList<Object> parts = new ArrayList<>();
     String current="";
         boolean searching = true;
@@ -145,22 +132,21 @@ private ArrayList<Object> funcParse(String func){
             charN += 1;
             if (charN >= func.length() - 1) {
                 searching = false;
+
             }
-            System.out.println(func);
 
             if (func.charAt(charN) == '(') {
                 pDepth += 1;
             } else if (func.charAt(charN) == ')') {
-                if (isDouble(current)){
-                        searching = false;
-                        parts.add(current);
-                    vars.put(current,Constant);
-                }
+
 
                 pDepth -= 1;
             } else if (pDepth == 0) {
                 current = current + func.charAt(charN);
-
+                if (!searching && isDouble(current)){
+                    parts.add(current);
+                    vars.put(current,new Constant(Double.parseDouble(current)));
+                }
 
 
 
@@ -171,7 +157,7 @@ private ArrayList<Object> funcParse(String func){
 
                 if (twoInputFuncs.containsKey(current)) {
                     searching = false;
-                    if (current.equals("log")) {
+                    if (current.equals("LOG")) {
                         charSave = charN + 2;
                         while (func.charAt(charN) != ',') {
                             charN += 1;
@@ -179,7 +165,7 @@ private ArrayList<Object> funcParse(String func){
 
 
 
-                        parts.add(funcParse("(ln(" + func.substring(charSave, charN) + "))/(ln(" + func.substring(charN + 1, func.length() - 1) + "))"));
+                        parts.add(funcParse("(LN(" + func.substring(charSave, charN) + "))/(LN(" + func.substring(charN + 1, func.length() - 1) + "))"));
                         //ln/ln
                     } else {
                         parts.add(funcParse(func.substring(1, charN - current.length())));
@@ -209,6 +195,11 @@ private ArrayList<Object> funcParse(String func){
         return parts;
     }
 
+
+
+
+
+
     public String superscript(String input){
         String sups = "⁰¹²³⁴⁵⁶⁷⁸⁹";
         for (int i=0; i<10; i++){
@@ -217,46 +208,63 @@ private ArrayList<Object> funcParse(String func){
         return input;
     }
 
+    public ArrayList<Object> reverseParse(Expression exp){
+        ArrayList <Object> arr = new ArrayList <Object>();
+        printNested(exp.getFields());
 
-    private ArrayList<Object> reverseParse(Expression exp){
-        ArrayList <Object> arr = new ArrayList <Object>;
+
         if (exp.getFields().size()==1){
-            arr.add(exp.getFields().get(0).name().toLowerCase());
+            arr.add(String.valueOf(exp.getFields().get(0)));
         }
 
 
+
+
         if (exp.getFields().size()==2){
-            if (exp.getFields() instanceof Exponential){
-                arr.add(reverseParse(exp.getFields().get(0)));
-                if (exp.getFields().get(2) instanceof Constant && isInteger(((Expression) exp.getFields().get(2)).getFields().get(1).name().toLowerCase())){
-                    arr.add(superscript(((Expression) exp.getFields().get(2)).getFields().get(1).name().toLowerCase()));
+            if (exp instanceof Exponential){
+                arr.add(reverseParse((Expression) (exp.getFields().get(0))));
+                if (exp.getFields().get(1) instanceof Constant && isInteger((String) (((Expression) exp.getFields().get(1)).getFields().get(0)))){
+                    arr.add(superscript((String) ((Expression) exp.getFields().get(1)).getFields().get(0)));
                 }
 
                 else {
                     arr.add("^");
-                    arr.add(reverseParse(exp.getFields().get(2)));
+                    arr.add(reverseParse((Expression)(exp.getFields().get(2))));
                 }
             }
             else {
-                arr.add(exp.getFields().get(1).name().toLowerCase());
-                arr.add(reverseParse(exp.getFields().get(1)));
+                arr.add(((TrigFunction) (exp.getFields().get(1))).name().toLowerCase());
+                arr.add(reverseParse((Expression) exp.getFields().get(0)));
             }
         }
 
-
         if (exp.getFields().size()==3){
-            if (exp.getFields().get(1).name()=="/" && exp.getFields().get(0) instanceof Logarithm && exp.getFields().get(2) instanceof Logarithm){
+            if (((Operation) ((exp.getFields()).get(2))).equals(Operation.DIVIDE) && exp.getFields().get(0) instanceof Logarithm && exp.getFields().get(2) instanceof Logarithm){
                 arr.add("log");
-                arr.add(reverseParse(exp.getFields().get(0)));
+                arr.add(reverseParse((Expression) exp.getFields().get(0)));
                 arr.add(",");
-                arr.add(reverseParse(exp.getFields().get(2)));
+                arr.add(reverseParse((Expression) exp.getFields().get(2)));
             }
             //LOG CASE YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY
             else{
-                arr.add(reverseParse(exp.getFields().get(0)));
-                arr.add(exp.getFields().get(1).name());
-                arr.add(reverseParse(exp.getFields().get(2)));
+                if(((Expression) exp.getFields().get(0)) instanceof Constant && ((Expression) exp.getFields().get(1))instanceof Constant){
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("/")) {
+                        arr.add( String.valueOf((Double.parseDouble((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))/(Double.parseDouble((String)((Expression) exp.getFields().get(0)).getFields().get(0)))));
+                    }
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("+")) {
+                        arr.add( String.valueOf((Double.parseDouble((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))+(Double.parseDouble((String)((Expression) exp.getFields().get(0)).getFields().get(0)))));
+                    }
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("*")) {
+                        arr.add( String.valueOf((Double.parseDouble((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))*(Double.parseDouble((String)((Expression) exp.getFields().get(0)).getFields().get(0)))));
+                    }
+                }
+                //simplifies constants
 
+                else{
+                    arr.add(reverseParse((Expression) exp.getFields().get(0)));
+                    arr.add(oper(((Operation) (exp.getFields().get(2))).name()));
+                    arr.add(reverseParse((Expression) (exp.getFields().get(1))));
+                }
             }
         }
 
@@ -265,22 +273,33 @@ private ArrayList<Object> funcParse(String func){
 
 
 
+public String oper(String OPE){
+    if (OPE.equals("ADD")){
+        return "+";
+    }
+    if (OPE.equals("DIVIDE")){
+        return "/";
+    }
+    if (OPE.equals("MULTIPLY")){
+        return "*";
+    }
+    throw new IllegalArgumentException("minusing isnt real thats what the gov wants you to think");
+}
 
 
 
+/*
     public static void main(String[] args){
+        Variable variable = new Variable("x");
+        Constant constant = new Constant(0);
+        Trig trig = new Trig(variable,TrigFunction.COS);
+        InvTrig invTrig = new InvTrig(variable,TrigFunction.COS);
+        Logarithm logarithm = new Logarithm(constant,variable);
+        Exponential exponential = new Exponential(variable,constant);
+        Arithmetic arithmetic = new Arithmetic(variable,constant, Operation.ADD);
 
-
-
-        ParserMain m =new ParserMain();
-        toExpression t = new toExpression();
-        Trig trig = new Trig(null,null);
-        InvTrig invTrig = new InvTrig(null,null);
-        Logarithm logarithm = new Logarithm(null,null);
-        Exponential exponential = new Exponential(null,null);
-        Arithmetic arithmetic = new Arithmetic(null,null,null);
-        Variable variable = new Variable(null);
-        Constant constant = new Constant(null);
+        ParserMain m =new ParserMain(trig, invTrig, logarithm, arithmetic, exponential, constant, variable);
+        ToExpression t = new ToExpression(m);
 
         ArrayList<Object> equation = new ArrayList<>();
         String function;
@@ -291,15 +310,18 @@ private ArrayList<Object> funcParse(String func){
         printNested(equation);
 
 
-        Expression expression = t.express(equation);
+        Expression expression = t.express(equation,m.vars,m.oneInputFuncs,m.twoInputFuncs);
         Expression derivative = expression.calculateDerivative();
 
-        ArrayList<Object> derived = reverseParse(derivative);
+        System.out.println("Derivative a success probably (LOCK IN TERESA)");
+
+        ArrayList<Object> derived = m.reverseParse(derivative);
+
+        System.out.println("OKAY NOW WE PRINT DERIVATIVE");
+
         printNested(derived);
-        printFunc(derived);
+        System.out.println(" ");
+        System.out.println(printFunc(derived));
     }
+    */
 }
-
-
-
-
