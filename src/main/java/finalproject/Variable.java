@@ -5,7 +5,6 @@ public class Variable implements Differentiable {
 
     public Variable(String name) {
         this.name = name;
-        System.out.println("make "+this);
     }
     @Override
     public Differentiable derivative() {
