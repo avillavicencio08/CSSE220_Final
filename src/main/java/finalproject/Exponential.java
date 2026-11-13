@@ -13,7 +13,7 @@ public class Exponential implements Expression {
 
     @Override
     public double[] getDomain() {
-        // Todo: this shit
+        // TODO: domain
         return new double[0];
     }
 
@@ -24,32 +24,22 @@ public class Exponential implements Expression {
 
     @Override
     public Expression calculateDerivative() {
-        // there are two main cases, e is constant and b isn't
-        // and b is constant and e isnt.
+        if (isConstant()) return new Constant(0); // FIX: was null
 
-        if(isConstant()) return null;
-
-        // power rule: [x^n]' = nx^(n-1), chain rule
-        if(exponent.isConstant() && !base.isConstant()) {
+        if (exponent.isConstant() && !base.isConstant()) {
+            // power rule + chain rule: [u^n]' = n u^(n-1) u'
             Expression c = new Exponential(base, new Arithmetic(exponent, new Constant(-1), Operation.ADD));
             Expression d = new Arithmetic(exponent, base.calculateDerivative(), Operation.MULTIPLY);
 
             return new Arithmetic(c, d, Operation.MULTIPLY);
-        } else if(!exponent.isConstant() && base.isConstant()) {
-            // exponential rule: [a^x] = a^x ln a, chain rule
-            // not adding a special case for e, that shit is annoying.
-            // simplification should take care of it.
-
-            Expression c = this;
+        } else if (!exponent.isConstant() && base.isConstant()) {
+            // exponential rule + chain rule: [a^u]' = a^u ln(a) u'
+            // (no special case for e; the simplifier folds ln(e) to 1)
             Expression d = new Arithmetic(exponent.calculateDerivative(), new Logarithm(new Constant(Math.E), base), Operation.MULTIPLY);
 
-            return new Arithmetic(c,d,Operation.MULTIPLY);
+            return new Arithmetic(this, d, Operation.MULTIPLY);
         } else {
-            // logarithmic differentiation.
-            // used exclusively for the case that
-            // a^b are both functions of x
-            // f' = f [ln f]'
-
+            // both are functions of x: logarithmic differentiation, f' = f [v ln u]'
             Expression ln = new Arithmetic(exponent, new Logarithm(new Constant(Math.E), base), Operation.MULTIPLY);
 
             return new Arithmetic(this, ln.calculateDerivative(), Operation.MULTIPLY);
@@ -74,11 +64,6 @@ public class Exponential implements Expression {
         return fields;
     }
 
-    public Expression getBase() {
-        return base;
-    }
-
-    public Expression getExponent() {
-        return exponent;
-    }
+    public Expression getBase() { return base; }
+    public Expression getExponent() { return exponent; }
 }

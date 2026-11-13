@@ -4,13 +4,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.Duration;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -18,72 +15,45 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import finalproject.Point2D;
-import java.sql.Time;
-import finalproject.flappybird.Pipe;
-import finalproject.flappybird.Pipes;
+import javafx.util.Duration;
 import finalproject.flappybird.FlappyToken;
+import finalproject.flappybird.Pipes;
+import finalproject.Point2D;
 
-/**
- * Starter JavaFX app for CSSE220 Milestone 1.
- * Replace this simple window with the first version of your project.
-**/
+/** Derivative calculator with a Flappy Bird easter egg. */
 public class StarterApp extends Application {
     private Timeline flappy;
     private int score = 0;
     private int highScore = 0;
 
-    /**
-    static Differentiable classify(ArrayList<?> list) {
-        return switch (list.size()) {
-            case 3 -> {
-                String oper = ((String) list.get(1)).toLowerCase();
-                yield Operator.create(classify((ArrayList<?>) list.getFirst()), oper, classify((ArrayList<?>) list.getLast()));
-            }
-            case 2 -> {
-                String func = ((String) list.getFirst()).toLowerCase();
-                yield Func.create(func, classify((ArrayList<?>) list.getLast()));
-            }
-            case 1 -> {
-                if (list.getFirst() instanceof String && list.getFirst().equals("x")) yield new Variable("x");
-                yield Constant.create((String) list.getFirst());
-            }
-            default -> null;
-        };
-    }
-     **/
-    /*
-    Look at Differentiable Interface to see methods
-    */
     @Override
     public void start(Stage stage) {
-        // TODO 1: Choose a simple app title and create a small root layout.
-        Label titleLabel = new Label("CSSE220 Final Project - Wolphram Beta™");
-        Label statusLabel = new Label("Starter app is ready.");
+        Label status = new Label("Wolfram Beta");
 
         Rectangle sky = new Rectangle(0, 0, 185, 50);
-        sky.setFill(Color.GREY);
+        sky.setFill(Color.WHITESMOKE);
         Rectangle ground = new Rectangle(0, 50, 185, 2500);
         ground.setFill(Color.LIGHTGRAY);
 
         Button differentiate = new Button("Differentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
-        Label status = new Label("Wolfram Beta");
         TextField textField = new TextField();
+        textField.setPromptText("e.g. x^2 + sin(x)");
         Label fillerDisp = new Label("");
 
-        VBox inputOutput = new VBox(textField,fillerDisp);
+        VBox inputOutput = new VBox(textField, fillerDisp);
         inputOutput.setPadding(new Insets(12));
 
-        differentiate.setOnAction(event -> {
-            String output = Integrate(textField.getText());
+        Runnable runDifferentiate = () -> {
+            String output = differentiate(textField.getText());
             System.out.println("calculated and found " + output);
-            DisplayOutput(output,inputOutput);
-        });
+            DisplayOutput(output, inputOutput);
+        };
+        differentiate.setOnAction(event -> runDifferentiate.run());
+        textField.setOnAction(event -> runDifferentiate.run()); // Enter also works
 
         Rectangle startBlock = new Rectangle(0, 0, 10085, 5000);
-        sky.setFill(Color.WHITESMOKE);
         Button startButton = new Button("Start");
 
         Pane myPane = new Pane(sky, ground);
@@ -91,16 +61,31 @@ public class StarterApp extends Application {
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
         myPane.setPrefSize(500, 300);
         myPane.setMinSize(500, 300);
-        myPane.setMaxSize(1800, 1000); //we need for flappybird
+        myPane.setMaxSize(1800, 1000); // we need this for flappybird
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
 
+        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(100,100);
+        points[1] = new Point2D(205,205);
+        points[2] = new Point2D(300,800);
+        graphCanvas.tempPlotName(points);
+        HBox comboWGraph = new HBox(inputOutput,graphCanvas);
+        myPane.getChildren().add(comboWGraph);
+
+        myPane.getChildren().add(bird.getView());
+
+        myPane.getChildren().add(startBlock);
+        myPane.getChildren().add(startButton);
+
         Pipes pipes = new Pipes();
 
         startButton.setOnAction(event -> {
-           startBlock.setVisible(false);
-           startButton.setVisible(false);
+            startBlock.setVisible(false);
+            startButton.setVisible(false);
         });
 
         reset.setOnAction(event -> {
@@ -110,23 +95,19 @@ public class StarterApp extends Application {
             bird.getView().setVisible(false);
             pipes.ClearAllPipes(myPane);
             fillerDisp.setVisible(false);
-
         });
 
         flappy = new Timeline(new KeyFrame(Duration.millis(20), event -> {
-            if (!bird.getView().isVisible())
-            {
+            if (!bird.getView().isVisible()) {
                 bird.getView().setVisible(true);
             }
             bird.step();
             score += 1;
-            if (score > highScore)
-            {
+            if (score > highScore) {
                 highScore = score;
             }
             fillerDisp.setText("Score: " + score + "  High Score: " + highScore);
-            if (!pipes.step(myPane,bird.getView().getTranslateY(),bird.getView().getTranslateX(),score)) //checking if we have lost
-            {
+            if (!pipes.step(myPane, bird.getView().getTranslateY(), bird.getView().getTranslateX(), score)) { // lost?
                 pipes.ClearAllPipes(myPane);
                 bird.reset();
                 bird.getView().setVisible(false);
@@ -136,36 +117,21 @@ public class StarterApp extends Application {
             }
         }));
         flappy.setCycleCount(Timeline.INDEFINITE);
-        jump.setOnAction( event -> {
+        jump.setOnAction(event -> {
             flappy.play();
             fillerDisp.setVisible(true);
             bird.yVel = 3;
         });
 
-
-//        canvas.setOnKeyPressed(event -> {
-//            KeyCode code = event.getCode();
-//            if (code == KeyCode.RIGHT) {
-//                writeIndex += 1;
-//            }
-        //probably dont need this yet, we have the textbox luckily
-
         HBox controls = new HBox(15, differentiate, jump, reset);
         controls.setPadding(new Insets(12));
-        HBox header = new HBox(12, new Label("Lock in nolan!"));
-        header.setPadding(new Insets(12));
 
         BorderPane rootPane = new BorderPane();
-
-
-
         rootPane.setCenter(myPane);
         rootPane.setTop(controls);
-        //rootPane.setTop(header);
         rootPane.setBottom(status);
         stage.setTitle("Derivative Calculator");
         stage.setScene(new Scene(rootPane, 640, 400));
-        //stage.setResizable(false);
         stage.show();
         myPane.requestFocus();
 
@@ -215,44 +181,20 @@ public class StarterApp extends Application {
 
     }
 
-    public String Integrate(String input)
-    {
-        // fml
-        Variable variable = new Variable("x");
-        Constant constant = new Constant(0);
-        Trig trig = new Trig(variable,TrigFunction.COS);
-        InvTrig invTrig = new InvTrig(variable,TrigFunction.COS);
-        Logarithm logarithm = new Logarithm(constant,variable);
-        Exponential exponential = new Exponential(variable,constant);
-        Arithmetic arithmetic = new Arithmetic(variable,constant, Operation.ADD);
-
-        ParserMain m =new ParserMain(trig, invTrig, logarithm, arithmetic, exponential, constant, variable);
-        ToExpression t = new ToExpression(m);
-
-        Expression e = t.express(m.funcParse(input), m.vars,m.oneInputFuncs,m.twoInputFuncs);
-
-        Expression diff = e.calculateDerivative();
-
-        return ParserMain.printFunc(m.reverseParse(diff));
+    /** Parses the input and returns its derivative as text (or "Error: ..."). */
+    public String differentiate(String input) {
+        return Differentiator.differentiate(input);
     }
 
-    public void DisplayOutput(String output,VBox inputOutput)
-    {
+    public void DisplayOutput(String output, VBox inputOutput) {
         Label out = new Label(output);
         inputOutput.getChildren().add(out);
     }
 
-    public void ClearOutputs(VBox inputOutput)
-    {
-        while (inputOutput.getChildren().size() > 2)
-        {
+    public void ClearOutputs(VBox inputOutput) {
+        while (inputOutput.getChildren().size() > 2) {
             inputOutput.getChildren().remove(2);
         }
-        // TODO 5: Replace this starter view with your real app design.
-        /*for(int i = 0; i < 1000000000; ++i) {
-            ;
-        }
-        webEngine.executeScript("new Grapher();");*/
     }
 
     public static void main(String[] args) {

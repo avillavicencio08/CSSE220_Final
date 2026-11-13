@@ -9,12 +9,12 @@ public class Constant implements Expression {
 
     public Constant(int value) {
         this.value = value;
-        this.dvalue = (double)value;
+        this.dvalue = (double) value;
         decimal = false;
     }
 
     public Constant(double value) {
-        this.value = (int)value;
+        this.value = (int) value;
         this.dvalue = value;
         decimal = true;
     }
@@ -27,13 +27,13 @@ public class Constant implements Expression {
         return true;
     }
 
+    // FIX: used to return null, which caused NullPointerExceptions further up the tree.
     public Expression calculateDerivative() {
-        return null;
+        return new Constant(0);
     }
 
     public double evaluate(double x) {
-        if(decimal) return dvalue;
-        else return value;
+        return dvalue;
     }
 
     @Override
@@ -48,15 +48,7 @@ public class Constant implements Expression {
         return fields;
     }
 
-    public boolean isDecimal() {
-        return decimal;
-    }
-
-    public double getDoubleValue() {
-        return dvalue;
-    }
-
-    public int getIntValue() {
-        return value;
-    }
+    public boolean isDecimal() { return decimal; }
+    public double getDoubleValue() { return dvalue; }
+    public int getIntValue() { return value; }
 }
