@@ -1,4 +1,4 @@
-package finalproject;
+/**package finalproject;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,7 +27,7 @@ import finalproject.flappybird.FlappyToken;
 /**
  * Starter JavaFX app for CSSE220 Milestone 1.
  * Replace this simple window with the first version of your project.
- */
+
 public class StarterApp extends Application {
     private Timeline flappy;
     private int score = 0;
@@ -240,3 +240,4 @@ public class StarterApp extends Application {
         launch(args);
     }
 }
+**/
