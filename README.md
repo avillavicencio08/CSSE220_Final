@@ -9,7 +9,7 @@ It also contains Flappy Bird, so that students can focus, similar to Subway Surf
 
 ## Design
 
-### GUI; Subway Surfers
+### GUI; Flappy Bird
 
 TODO
 
@@ -26,7 +26,7 @@ In practical terms, the solver acts recursively, as a series of derivative calcu
 
 TODO
 
-### Graphing
+### Graphing/Rendering
 
 TODO
 
