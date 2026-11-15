@@ -1,4 +1,4 @@
-/**package finalproject;
+package finalproject;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,13 +20,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import finalproject.Point2D;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import finalproject.flappybird.Pipe;
 import finalproject.flappybird.Pipes;
 import finalproject.flappybird.FlappyToken;
-
-/**
- * Starter JavaFX app for CSSE220 Milestone 1.
- * Replace this simple window with the first version of your project.
 
 public class StarterApp extends Application {
     private Timeline flappy;
@@ -214,7 +213,14 @@ public class StarterApp extends Application {
 
     public String Integrate(String input)
     {
-        return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
+        /* this is so much easier in rust */
+        String fn = input.strip().chars().filter(c -> !Character.isWhitespace(c) && c <= 127).mapToObj(c -> String.valueOf((char) c)).collect(Collectors.joining());
+        ParserMain pm = new ParserMain();
+        ArrayList<?> parsed = pm.funcParse(fn);
+
+        Differentiable dydx = classify(parsed).derivative();
+
+        return dydx.toString();
     }
 
     public void DisplayOutput(String output,VBox inputOutput)
@@ -240,4 +246,3 @@ public class StarterApp extends Application {
         launch(args);
     }
 }
-**/

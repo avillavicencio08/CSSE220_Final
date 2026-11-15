@@ -1,3 +1,5 @@
+package finalproject;
+
 public class Variable implements Differentiable {
     public String name;
 

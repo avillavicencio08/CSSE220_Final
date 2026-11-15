@@ -1,3 +1,5 @@
+package finalproject;
+
 public class Constant implements Differentiable{
     public String name;
     public boolean isNumber;
