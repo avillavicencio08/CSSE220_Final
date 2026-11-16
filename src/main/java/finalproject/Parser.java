@@ -1,14 +1,13 @@
 package finalproject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
-public class ParserMain {
+public class Parser {
     private ArrayList<String> oneInputFuncs;
     private ArrayList<String> twoInputFuncs;
     private HashMap<String, String> vars;
 
-    public ParserMain(){
+    public Parser(){
         this.oneInputFuncs = new ArrayList<>();
         this.twoInputFuncs = new ArrayList<>();
 

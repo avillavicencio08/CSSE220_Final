@@ -10,20 +10,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import finalproject.Point2D;
-import java.sql.Time;
+
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import finalproject.flappybird.Pipe;
 import finalproject.flappybird.Pipes;
 import finalproject.flappybird.FlappyToken;
 
@@ -214,9 +210,9 @@ public class StarterApp extends Application {
     public String Integrate(String input)
     {
         /* this is so much easier in rust */
-        String fn = input.strip().chars().filter(c -> !Character.isWhitespace(c) && c <= 127).mapToObj(c -> String.valueOf((char) c)).collect(Collectors.joining());
-        ParserMain pm = new ParserMain();
-        ArrayList<?> parsed = pm.funcParse(fn);
+        String fn = input.replaceAll("\\s", "");
+        Parser pm = new Parser();
+        ArrayList<?> parsed = pm.funcParse(fn.toLowerCase());
 
         Differentiable dydx = classify(parsed).derivative();
 
