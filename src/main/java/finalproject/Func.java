@@ -1,6 +1,5 @@
 package finalproject;
 
-import java.awt.geom.Arc2D;
 import java.util.Map;
 import java.util.function.Function ;
 
@@ -20,6 +19,14 @@ public class Func implements Differentiable{
             Map.entry("exp", (x) -> Func.create("exp", x))
     );
     public static Differentiable create(String name, Differentiable input) {
+        switch (name) {
+            case "csc": return Operator.create(Constant.create("1"), "/", Func.create("sin", input));
+            case "sec": return Operator.create(Constant.create("1"), "/", Func.create("cos", input));
+            case "cot": return Operator.create(Constant.create("1"), "/", Func.create("tan", input));
+            case "arccsc": return Func.create("arcsin", Operator.create(Constant.create("1"), "/", input));
+            case "arcsec": return Func.create("arccos", Operator.create(Constant.create("1"), "/", input));
+            case "arccot": return Func.create("arctan", Operator.create(Constant.create("1"), "/", input));
+        }
         if (input instanceof Func) {
             if (((Func) input).name.equals("-")) {
                 if (name.equals("-")) return ((Func) input).input;
@@ -42,7 +49,7 @@ public class Func implements Differentiable{
                 if (((Operator) input).input2 instanceof Func&&((Func) ((Operator) input).input2).name.equals("ln")) return Operator.create(((Func) ((Operator) input).input2).input, "^", ((Operator) input).input1);
             }
         }
-        //trig identities and such
+        //trig identities and such UNLIKELY
         return new Func(name, input);
     }
     private Func(String name, Differentiable input) {
@@ -56,7 +63,7 @@ public class Func implements Differentiable{
             return Constant.create("0");
         }
         return Operator.create(derivatives.get(this.name).apply(this.input), "*", this.input.derivative());
-        }
+    }
 
     @Override
     public boolean isConstant() {
@@ -90,4 +97,3 @@ public class Func implements Differentiable{
         return false;
     }
 }
-
