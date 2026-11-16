@@ -55,6 +55,7 @@ public class GraphCanvas extends Canvas {
             System.out.println("Error: Bounds Check (on the Graph space)!!!");
             return;
         }
+        System.out.println("graphing");
         if (x1 > x2) {
             double tempX = x1;
             double tempY = y1;
@@ -90,8 +91,7 @@ public class GraphCanvas extends Canvas {
 
     public void plot(Point2D[] points) {
         // TODO: check the bounds with the border of the GraphCanvas.
-        for(int i = 0; points.length > i; ++i) {
-            Point2D point = points[i];
+        for (Point2D point : points) {
             this.ctx.fillRect(point.x, point.y, 5, 5);
         }
     }
@@ -104,10 +104,4 @@ public class GraphCanvas extends Canvas {
             this.drawLine(start, end);
         }
     }
-
-    public void eval(Object o) {
-        // TODO: I think I now know why something like this is needed.
-    }
-
-    //public void regression
 }

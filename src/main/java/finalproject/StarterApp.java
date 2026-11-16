@@ -10,28 +10,42 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import finalproject.Point2D;
-import java.sql.Time;
-import finalproject.flappybird.Pipe;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
 import finalproject.flappybird.Pipes;
 import finalproject.flappybird.FlappyToken;
 
-/**
- * Starter JavaFX app for CSSE220 Milestone 1.
- * Replace this simple window with the first version of your project.
- */
 public class StarterApp extends Application {
     private Timeline flappy;
     private int score = 0;
     private int highScore = 0;
+    
+    static Differentiable classify(ArrayList<?> list) {
+        return switch (list.size()) {
+            case 3 -> {
+                String oper = ((String) list.get(1));
+                yield Operator.create(classify((ArrayList<?>) list.getFirst()), oper, classify((ArrayList<?>) list.getLast()));
+            }
+            case 2 -> {
+                String func = ((String) list.getFirst());
+                yield Func.create(func, classify((ArrayList<?>) list.getLast()));
+            }
+            case 1 -> {
+                if (list.getFirst() instanceof String && list.getFirst().equals("x")) yield new Variable("x");
+                yield Constant.create((String) list.getFirst());
+            }
+            default -> null;
+        };
+    }
+
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
@@ -53,8 +67,15 @@ public class StarterApp extends Application {
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
 
+        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        //graphCanvas.drawLine(20, 30, 40, 50);
+        //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+
+        HBox combine = new HBox(inputOutput,graphCanvas);
+        //combine.setPadding(new Insets(12));
+
         differentiate.setOnAction(event -> {
-            String output = Integrate(textField.getText());
+            String output = Differentiate(textField.getText(),graphCanvas);
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
         });
@@ -64,6 +85,7 @@ public class StarterApp extends Application {
         Button startButton = new Button("Start");
 
         Pane myPane = new Pane(sky, ground);
+        myPane.getChildren().add(combine);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
         myPane.setPrefSize(500, 300);
@@ -152,7 +174,7 @@ public class StarterApp extends Application {
         actionButton.setOnAction(event -> {
             statusLabel.setText("Your team has launched the shared starter.");
         });
-        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        //GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
         graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
         HBox comboWGraph = new HBox(inputOutput,graphCanvas);
@@ -167,16 +189,15 @@ public class StarterApp extends Application {
         points[1] = new Point2D(605, 605);
         points[2] = new Point2D(400, 700);
         graphCanvas.tempPlotName(points);*/
+        //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
+        /*
         Point2D[] points = new finalproject.Point2D[3];
         points[0] = new finalproject.Point2D(100, 100);
         points[1] = new finalproject.Point2D(205, 205);
         points[2] = new finalproject.Point2D(300, 800);
-        graphCanvas.tempPlotName(points);
+        */
 
-        /*WebView webView = new WebView();
-        WebEngine webEngine = webView.getEngine();
-        webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
         //VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
@@ -192,9 +213,27 @@ public class StarterApp extends Application {
 
     }
 
-    public String Integrate(String input)
+    public String Differentiate(String input,GraphCanvas graphCanvas)
     {
-        return "Now some people are saying we have the best functions, and those people, very smart people, they know a lot about functions, and they say that our functions are the best, and they have seen a lot of functions, so they know what they are talking about....";
+        String fn = input.replaceAll("\\s+", "");
+        ArrayList<?> parsed = Parser.funcParse(fn.toLowerCase());
+
+        Differentiable dydx = Objects.requireNonNull(classify(parsed)).derivative();
+        ArrayList<Point2D> points = new ArrayList<>();
+        for (double x = 0; x < graphCanvas.getWidth(); x += .1)
+        {
+            double y = -1 * dydx.eval(x-graphCanvas.getWidth()/2) + graphCanvas.getHeight()/2;
+            Point2D newPoint = new Point2D(x,y);
+            points.add(newPoint);
+        }
+        Point2D[] convertedPs = new Point2D[points.size()];
+        for (int i = 0; i < points.size(); i++)
+        {
+            convertedPs[i] = points.get(i);
+        }
+        graphCanvas.tempPlotName(convertedPs);
+
+        return dydx.toString();
     }
 
     public void DisplayOutput(String output,VBox inputOutput)
