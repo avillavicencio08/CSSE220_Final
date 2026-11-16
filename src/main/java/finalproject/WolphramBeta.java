@@ -60,7 +60,7 @@ public class WolphramBeta extends Application {
         Button differentiate = new Button("Differentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
-        Label status = new Label("Wolfram Beta");
+        Label status = new Label("Wolfram Beta™");
         TextField textField = new TextField();
         Label fillerDisp = new Label("");
 
@@ -154,16 +154,12 @@ public class WolphramBeta extends Application {
 
         HBox controls = new HBox(15, differentiate, jump, reset);
         controls.setPadding(new Insets(12));
-        HBox header = new HBox(12, new Label("Lock in nolan!"));
-        header.setPadding(new Insets(12));
-
         BorderPane rootPane = new BorderPane();
 
 
 
         rootPane.setCenter(myPane);
         rootPane.setTop(controls);
-        //rootPane.setTop(header);
         rootPane.setBottom(status);
         stage.setTitle("Derivative Calculator");
         stage.setScene(new Scene(rootPane, 640, 400));
