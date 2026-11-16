@@ -26,7 +26,6 @@ public class Logarithm implements Expression {
         // we gonna ignore the case where base is variable
         // cause what the actual fuck
         // if that happens someone before us didn't do their job
-
         if(isConstant()) return null;
 
         if(base.isConstant() && !val.isConstant()) {

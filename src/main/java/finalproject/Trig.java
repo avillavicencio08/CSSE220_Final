@@ -39,14 +39,14 @@ public class Trig implements Expression {
                 /* added tan'(x) = sec^2 (x). */
                 return new Arithmetic(theta.calculateDerivative(), new Exponential(c, new Constant(-2)), Operation.MULTIPLY);
             }
-            case SINH -> {
-                return new Arithmetic(new Trig(theta, TrigFunction.COSH), theta.calculateDerivative(), Operation.MULTIPLY);
+            case HSIN -> {
+                return new Arithmetic(new Trig(theta, TrigFunction.HCOS), theta.calculateDerivative(), Operation.MULTIPLY);
             }
-            case COSH -> {
-                return new Arithmetic(new Trig(theta, TrigFunction.SINH), theta.calculateDerivative(), Operation.MULTIPLY);
+            case HCOS -> {
+                return new Arithmetic(new Trig(theta, TrigFunction.HSIN), theta.calculateDerivative(), Operation.MULTIPLY);
             }
-            case TANH -> {
-                Expression c = new Trig(theta, TrigFunction.COSH);
+            case HTAN -> {
+                Expression c = new Trig(theta, TrigFunction.HCOS);
 
                 /* added tanh'(x) = sech^2 (x). */
                 return new Arithmetic(theta.calculateDerivative(), new Exponential(c, new Constant(-2)), Operation.MULTIPLY);
@@ -64,8 +64,8 @@ public class Trig implements Expression {
         switch (this.fn) {
             case SIN -> o = Math.sin(theta.evaluate(x));
             case COS -> o = Math.cos(theta.evaluate(x));
-            case SINH -> o = Math.sinh(theta.evaluate(x));
-            case COSH -> o = Math.cosh(theta.evaluate(x));
+            case HSIN -> o = Math.sinh(theta.evaluate(x));
+            case HCOS -> o = Math.cosh(theta.evaluate(x));
         }
 
         return o;

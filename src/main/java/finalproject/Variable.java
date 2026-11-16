@@ -1,4 +1,52 @@
-public class Variable implements Differentiable {
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+package finalproject;
+
+import java.util.ArrayList;
+
+public class Variable implements Expression {
+    private String name;
+
+    public Variable(String name) {
+        this.name = name;
+    }
+
+    public double[] getDomain() {
+        return new double[]{Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
+    }
+
+    public boolean isConstant() {
+        return false;
+    }
+
+    public Expression calculateDerivative() {
+        return new Constant(1);
+    }
+
+    public double evaluate(double x) {
+        return x;
+    }
+
+    public Expression createChild(ArrayList<Object> args) {
+        return new Variable((String)args.getFirst());
+    }
+
+    public ArrayList<Object> getFields() {
+        ArrayList<Object> fields = new ArrayList();
+        fields.add(this.name);
+        return fields;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+}
+
+
+/**public class Variable implements Differentiable {
     public String name;
 
     public Variable(String name) {
@@ -26,4 +74,4 @@ public class Variable implements Differentiable {
     public Double eval(Double x) {
         return x;
     }
-}
+}**/

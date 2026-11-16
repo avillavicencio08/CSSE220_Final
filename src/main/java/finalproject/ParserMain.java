@@ -1,6 +1,7 @@
 package finalproject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class ParserMain {
@@ -20,9 +21,9 @@ public class ParserMain {
          oneInputFuncs.put("CSC", trig);
          oneInputFuncs.put("SEC", trig);
          oneInputFuncs.put("COT", trig);
-         oneInputFuncs.put("SINH", trig);
-         oneInputFuncs.put("COSH", trig);
-         oneInputFuncs.put("TANH", trig);
+         oneInputFuncs.put("HSIN", trig);
+         oneInputFuncs.put("HCOS", trig);
+         oneInputFuncs.put("HTAN", trig);
          oneInputFuncs.put("CSCH", trig);
          oneInputFuncs.put("SECH", trig);
          oneInputFuncs.put("COTH", trig);
@@ -56,9 +57,8 @@ public class ParserMain {
         this.vars = new HashMap<>();
         vars.put("PI", constant);
         vars.put("E", constant);
-        vars.put("g", constant);
         vars.put("GAMMA",constant);
-        vars.put("x", variable);
+        vars.put("X", variable);
 
     }
 
@@ -167,6 +167,7 @@ private ArrayList<Object> funcParse(String func){
                 if (!searching && isDouble(current)){
                     parts.add(current);
                     vars.put(current,new Constant(Double.parseDouble(current)));
+                    return parts;
                 }
 
 
@@ -186,7 +187,7 @@ private ArrayList<Object> funcParse(String func){
 
 
 
-                        parts.add(funcParse("(LN(" + func.substring(charSave, charN) + "))/(LN(" + func.substring(charN + 1, func.length() - 1) + "))"));
+                        return funcParse("(LN(" + func.substring(charSave, charN) + "))/(LN(" + func.substring(charN + 1, func.length() - 1) + "))");
                         //ln/ln
                     } else {
                         parts.add(funcParse(func.substring(1, charN - current.length())));
@@ -256,16 +257,20 @@ private ArrayList<Object> funcParse(String func){
         if (exp.getFields().size()==2){
             if (exp instanceof Exponential){
                 arr.add(reverseParse((Expression) (exp.getFields().get(0))));
-                if (exp.getFields().get(1) instanceof Constant && isInteger((String) (((Expression) exp.getFields().get(1)).getFields().get(0)))){
-                    arr.add(superscript((String) ((Expression) exp.getFields().get(1)).getFields().get(0)));
+                if (exp.getFields().get(1) instanceof Constant && isInteger((((Expression) exp.getFields().get(1)).getFields().get(0)).toString())){
+                    arr.add(superscript((((Expression) exp.getFields().get(1)).getFields().get(0)).toString()));
                 }
 
                 else {
                     arr.add("^");
-                    arr.add(reverseParse((Expression)(exp.getFields().get(2))));
+                    arr.add(reverseParse((Expression)(exp.getFields().get(1))));
                 }
             }
-            else {
+            else if (exp instanceof Logarithm) {
+                arr.add("ln");
+                    arr.add(reverseParse((Expression) exp.getFields().get(1)));
+            }
+            else{
                 arr.add(((TrigFunction) (exp.getFields().get(1))).name().toLowerCase());
                 arr.add(reverseParse((Expression) exp.getFields().get(0)));
             }
@@ -285,28 +290,32 @@ private ArrayList<Object> funcParse(String func){
             //LOG CASE YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY
             else{
                 if(((Expression) exp.getFields().get(0)) instanceof Constant && ((Expression) exp.getFields().get(1))instanceof Constant){
-                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("/"){
-                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))/(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("/")){
+                        return simplfyDiv(exp);
+                        // return new ArrayList<Object>(List.of(new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))/(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))))));
                     }
-                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("+"){
-                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))+(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("+")){
+                     return simplfyAdd(exp);
+                    // return new ArrayList<Object>(List.of(new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))+(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))))));
                     }
-                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("*"){
-                        return new Constant((Integer.parseInt((String) ((Expression) exp.getFields().get(0)).getFields().get(0)))*(Integer.parseInt((String)((Expression) exp.getFields().get(0)).getFields().get(0))));
+                    if (oper(((Operation) (exp.getFields().get(2))).name()).equals("*")){
+                     return simplfyMult(exp);
+                        //   return new ArrayList<Object>(List.of(          (       (Double)(       (Expression)(          (ArrayList<Object>) (     ((Expression) exp).getFields()).get(0)       ).getFields().get(0)           *(Double)(      (Expression)(          ((Expression) exp).getFields().get(1)).getFields().get(0)        )  )    ).toString()));
+
                     }
                 }
                 //simplifies constants
 
 
 
-                else{
+                //else{
                     arr.add(reverseParse((Expression) exp.getFields().get(0)));
                     arr.add(oper(((Operation) (exp.getFields().get(2))).name()));
                     arr.add(reverseParse((Expression) (exp.getFields().get(1))));
-                }
+                //}
             }
         }
-
         return arr;
     }
 
@@ -322,20 +331,59 @@ public String oper(String OPE){
     if (OPE.equals("MULTIPLY")){
         return "*";
     }
-    throw new IllegalArgumentException("minusing isnt real thats what the gov wants you to think");
+    throw new IllegalArgumentException("minusing isnt real thats what the government wants you to think");
 }
 
 
 
-/*
+    public ArrayList<Object> simplfyAdd(Expression exp) {
+        ArrayList<Object> fields = ((Expression) exp).getFields();
+
+        Expression leftExpr = (Expression) fields.get(0);
+        Expression rightExpr = (Expression) fields.get(1);
+
+        double val1 = (Double) leftExpr.getFields().get(0);
+        double val2 = (Double) rightExpr.getFields().get(0);
+
+        String result = String.valueOf(val1 + val2);
+        return new ArrayList<Object>(List.of(result));
+    }
+
+    public ArrayList<Object> simplfyDiv(Expression exp) {
+        ArrayList<Object> fields = ((Expression) exp).getFields();
+
+        Expression leftExpr = (Expression) fields.get(0);
+        Expression rightExpr = (Expression) fields.get(1);
+
+        double val1 = (Double) leftExpr.getFields().get(0);
+        double val2 = (Double) rightExpr.getFields().get(0);
+
+        String result = String.valueOf(val1 / val2);
+        return new ArrayList<Object>(List.of(result));
+    }
+
+public ArrayList<Object> simplfyMult(Expression exp) {
+    ArrayList<Object> fields = ((Expression) exp).getFields();
+
+    Expression leftExpr = (Expression) fields.get(0);
+    Expression rightExpr = (Expression) fields.get(1);
+
+    double val1 = (Double) leftExpr.getFields().get(0);
+    double val2 = (Double) rightExpr.getFields().get(0);
+
+    String result = String.valueOf(val1 * val2);
+    return new ArrayList<Object>(List.of(result));
+}
+
     public static void main(String[] args){
-        Variable variable = new Variable("x");
+        Variable variable = new Variable("X");
         Constant constant = new Constant(0);
         Trig trig = new Trig(variable,TrigFunction.COS);
         InvTrig invTrig = new InvTrig(variable,TrigFunction.COS);
         Logarithm logarithm = new Logarithm(constant,variable);
         Exponential exponential = new Exponential(variable,constant);
         Arithmetic arithmetic = new Arithmetic(variable,constant, Operation.ADD);
+        Evaluate ev = new Evaluate();
 
         ParserMain m =new ParserMain(trig, invTrig, logarithm, arithmetic, exponential, constant, variable);
         ToExpression t = new ToExpression(m);
@@ -343,9 +391,11 @@ public String oper(String OPE){
         ArrayList<Object> equation = new ArrayList<>();
         String function;
         Scanner scanner = new Scanner(System.in);
-        function = scanner.nextLine();
+        function = (scanner.nextLine()).toUpperCase();
 
         equation = m.funcParse(function);
+        System.out.println(equation);
+        System.out.println(" ");
         printNested(equation);
 
 
@@ -361,6 +411,10 @@ public String oper(String OPE){
         printNested(derived);
         System.out.println(" ");
         System.out.println(printFunc(derived));
+
+        System.out.println("f(7)" + ev.evaluate(expression,7));
+        System.out.println("f'(7)" + ev.evaluate(derivative,7));
+
     }
-    */
+
 }

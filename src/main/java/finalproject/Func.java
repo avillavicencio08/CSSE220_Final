@@ -1,4 +1,4 @@
-import java.awt.geom.Arc2D;
+/**import java.awt.geom.Arc2D;
 import java.util.Map;
 import java.util.function.Function ;
 
@@ -87,5 +87,5 @@ public class Func implements Differentiable{
         if (input.getClass()==Func.class&&this.name.equals(((Func) input).name)) return this.input.equals(((Func) input).input);
         return false;
     }
-}
+}**/
 

@@ -27,7 +27,6 @@ public class Arithmetic implements Expression {
     @Override
     public Expression calculateDerivative() {
         if(isConstant()) return null;
-
         if(op == Operation.ADD) {
             if(a.isConstant()) return b.calculateDerivative();
             else if(b.isConstant()) return a.calculateDerivative();
@@ -51,7 +50,6 @@ public class Arithmetic implements Expression {
             Expression da;
             Expression db;
             Expression dc;
-
             if(a.isConstant()) {
                 // da is constant. db isn't. convert to exponential then power rule.
                 Expression d = new Exponential(b, new Constant(-1));

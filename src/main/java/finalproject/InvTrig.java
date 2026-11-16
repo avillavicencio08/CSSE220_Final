@@ -45,19 +45,19 @@ public class InvTrig implements Expression {
 
                 pcr = new Exponential(z, new Constant(-1));
             }
-            case SINH -> {
+            case HSIN -> {
                 Expression a = new Arithmetic(new Constant(1), new Exponential(in, new Constant(2)), Operation.ADD);
                 Expression b = new Arithmetic(in, new Exponential(a, new Constant(.5)), Operation.ADD);
 
                 pcr = new Logarithm(new Constant(Math.E), b);
             }
-            case COSH -> {
+            case HCOS -> {
                 Expression a = new Arithmetic(new Constant(-1), new Exponential(in, new Constant(2)), Operation.ADD);
                 Expression b = new Arithmetic(in, new Exponential(a, new Constant(.5)), Operation.ADD);
 
                 pcr = new Logarithm(new Constant(Math.E), b);
             }
-            case TANH -> {
+            case HTAN -> {
                 Expression a = new Arithmetic(new Constant(1), in, Operation.ADD);
                 Expression b = new Arithmetic(new Constant(1), new Arithmetic(new Constant(-1), in, Operation.MULTIPLY), Operation.ADD);
                 Expression c = new Logarithm(new Constant(Math.E), new Arithmetic(a, new Exponential(b, new Constant(-1)), Operation.MULTIPLY));
