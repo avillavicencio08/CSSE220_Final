@@ -18,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import finalproject.flappybird.Pipes;
 import finalproject.flappybird.FlappyToken;
@@ -31,11 +31,11 @@ public class StarterApp extends Application {
     static Differentiable classify(ArrayList<?> list) {
         return switch (list.size()) {
             case 3 -> {
-                String oper = ((String) list.get(1)).toLowerCase();
+                String oper = ((String) list.get(1));
                 yield Operator.create(classify((ArrayList<?>) list.getFirst()), oper, classify((ArrayList<?>) list.getLast()));
             }
             case 2 -> {
-                String func = ((String) list.getFirst()).toLowerCase();
+                String func = ((String) list.getFirst());
                 yield Func.create(func, classify((ArrayList<?>) list.getLast()));
             }
             case 1 -> {
@@ -45,9 +45,7 @@ public class StarterApp extends Application {
             default -> null;
         };
     }
-    /*
-    Look at Differentiable Interface to see methods
-    */
+
     @Override
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
@@ -70,7 +68,7 @@ public class StarterApp extends Application {
         inputOutput.setPadding(new Insets(12));
 
         differentiate.setOnAction(event -> {
-            String output = Integrate(textField.getText());
+            String output = Differentiate(textField.getText());
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
         });
@@ -176,22 +174,12 @@ public class StarterApp extends Application {
         //graphCanvas.drawLine(20, 30, 40, 50);
         graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
-        // Some tests.
-        /*Point2D[] points = new Point2D[3];
-        points[0] = new Point2D(400, 400);
-        points[1] = new Point2D(605, 605);
-        points[2] = new Point2D(400, 700);
-        graphCanvas.tempPlotName(points);*/
 
         Point2D[] points = new finalproject.Point2D[3];
         points[0] = new finalproject.Point2D(100, 100);
         points[1] = new finalproject.Point2D(205, 205);
         points[2] = new finalproject.Point2D(300, 800);
         graphCanvas.tempPlotName(points);
-
-        /*WebView webView = new WebView();
-        WebEngine webEngine = webView.getEngine();
-        webEngine.load("http://127.0.0.1:8000/index.html");//"file:///home/Matthew/CSSE-220/final/bloormg_branch/index.html");//"/home/Matthew/CSSE-220/final/bloormg_branch/index.html");*/
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
         VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
@@ -207,14 +195,12 @@ public class StarterApp extends Application {
 
     }
 
-    public String Integrate(String input)
+    public String Differentiate(String input)
     {
-        /* this is so much easier in rust */
-        String fn = input.replaceAll("\\s", "");
-        Parser pm = new Parser();
-        ArrayList<?> parsed = pm.funcParse(fn.toLowerCase());
+        String fn = input.replaceAll("\\s+", "");
+        ArrayList<?> parsed = Parser.funcParse(fn.toLowerCase());
 
-        Differentiable dydx = classify(parsed).derivative();
+        Differentiable dydx = Objects.requireNonNull(classify(parsed)).derivative();
 
         return dydx.toString();
     }
