@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class Parser {
     public static Set<String> twoInputFuncs = Set.of("^", "*", "+", "-", "/", "log");
-    public static Set<String> oneInputFuncs = Set.of("sin", "cos", "tan", "csc", "sec", "cot", "arcsin", "arccos", "arctan", "arccsc", "arcsec", "arccot", "ln", "-");
+    public static Set<String> oneInputFuncs = Set.of("sin", "cos", "tan", "csc", "sec", "cot", "arcsin", "arccos", "arctan", "arccsc", "arcsec", "arccot", "ln");
 
     public static boolean isDouble(String s) {
         try {
