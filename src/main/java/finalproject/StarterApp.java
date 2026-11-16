@@ -69,7 +69,7 @@ public class StarterApp extends Application {
 
         GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
-        //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
         HBox combine = new HBox(inputOutput,graphCanvas);
         //combine.setPadding(new Insets(12));
@@ -84,8 +84,7 @@ public class StarterApp extends Application {
         sky.setFill(Color.WHITESMOKE);
         Button startButton = new Button("Start");
 
-        Pane myPane = new Pane(sky, ground);
-        myPane.getChildren().add(combine);
+        Pane myPane = new Pane(sky, ground,combine);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
         myPane.setPrefSize(500, 300);
@@ -191,8 +190,8 @@ public class StarterApp extends Application {
 
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
-        //VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
-        //root.setPadding(new Insets(20));
+        VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
+        root.setPadding(new Insets(20));
 
 
 
@@ -211,9 +210,9 @@ public class StarterApp extends Application {
 
         Differentiable dydx = Objects.requireNonNull(classify(parsed)).derivative();
         ArrayList<Point2D> points = new ArrayList<>();
-        for (double x = 0; x < graphCanvas.getWidth(); x += .1)
+        for (double x = -100; x < 100; x += .05)
         {
-            double y = -1 * dydx.eval(x-graphCanvas.getWidth()/2) + graphCanvas.getHeight()/2;
+            double y = dydx.eval(x);
             Point2D newPoint = new Point2D(x,y);
             points.add(newPoint);
         }
