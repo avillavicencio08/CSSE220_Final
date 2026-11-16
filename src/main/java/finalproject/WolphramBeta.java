@@ -219,10 +219,10 @@ public class WolphramBeta extends Application {
 
         Differentiable dydx = Objects.requireNonNull(classify(parsed)).derivative();
         ArrayList<Point2D> points = new ArrayList<>();
-        for (double x = 0; x < graphCanvas.getWidth(); x += .1)
+        for (double x = 0; x < graphCanvas.getWidth(); x += 1)
         {
-            double y = -1 * dydx.eval(x-graphCanvas.getWidth()/2) + graphCanvas.getHeight()/2;
-            Point2D newPoint = new Point2D(x,y);
+            double y = -0.05*graphCanvas.getHeight()*dydx.eval((20*x-10*graphCanvas.getWidth())/graphCanvas.getWidth()) + graphCanvas.getHeight()/2;
+            Point2D newPoint = new Point2D(x-2.5,y-2.5);
             points.add(newPoint);
         }
         Point2D[] convertedPs = new Point2D[points.size()];
