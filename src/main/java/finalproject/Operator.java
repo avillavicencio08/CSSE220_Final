@@ -12,7 +12,7 @@ public class Operator implements Differentiable {
             Map.entry("+", (x, y) -> Operator.create(x.derivative(), "+", y.derivative())),
             Map.entry("-", (x, y) -> Operator.create(x.derivative(), "-", y.derivative())),
             Map.entry("*", (x, y) -> Operator.create(Operator.create(x.derivative(), "*", y), "+", Operator.create(y.derivative(), "*", x))),
-            Map.entry("/", (x, y) -> Operator.create(Operator.create(Operator.create(x.derivative(), "*", y), "-", Operator.create(x, "*", y.derivative())), "/", Operator.create(y, "^2", Constant.create("2")))),
+            Map.entry("/", (x, y) -> Operator.create(Operator.create(Operator.create(x.derivative(), "*", y), "-", Operator.create(x, "*", y.derivative())), "/", Operator.create(y, "^", Constant.create("2")))),
             Map.entry("^", (x, y) -> Operator.create(Operator.create(x, "^", y), "*", Operator.create(Func.create("ln", x), "*", y).derivative())),
             Map.entry("log", (x, y) -> Operator.create(Func.create("ln", y), "/", Func.create("ln", x)).derivative())
     );

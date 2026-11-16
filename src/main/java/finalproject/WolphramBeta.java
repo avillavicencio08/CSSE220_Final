@@ -23,7 +23,7 @@ import java.util.Objects;
 import finalproject.flappybird.Pipes;
 import finalproject.flappybird.FlappyToken;
 
-public class StarterApp extends Application {
+public class WolphramBeta extends Application {
     private Timeline flappy;
     private int score = 0;
     private int highScore = 0;
@@ -50,7 +50,7 @@ public class StarterApp extends Application {
     public void start(Stage stage) {
         // TODO 1: Choose a simple app title and create a small root layout.
         Label titleLabel = new Label("CSSE220 Final Project - Wolphram Beta™");
-        Label statusLabel = new Label("Starter app is ready.");
+        Label statusLabel = new Label("Wolphram Beta™ is ready.");
 
         Rectangle sky = new Rectangle(0, 0, 185, 50);
         sky.setFill(Color.GREY);
@@ -60,14 +60,15 @@ public class StarterApp extends Application {
         Button differentiate = new Button("Differentiate");
         Button reset = new Button("Clear Output");
         Button jump = new Button("Flap");
-        Label status = new Label("Wolfram Beta");
+        Label status = new Label("Wolfram Beta™");
         TextField textField = new TextField();
         Label fillerDisp = new Label("");
 
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
+        Dims graphDims = new Dims(300, 300);
 
-        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        GraphCanvas graphCanvas = new GraphCanvas(graphDims, Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
         //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
@@ -88,16 +89,13 @@ public class StarterApp extends Application {
         myPane.getChildren().add(combine);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
+        // TODO: Change graphDims accordingly every time the screen changes size.
         myPane.setPrefSize(500, 300);
         myPane.setMinSize(500, 300);
         myPane.setMaxSize(1800, 1000); //we need for flappybird
 
         FlappyToken bird = new FlappyToken();
         bird.getView().setVisible(false);
-        myPane.getChildren().add(bird.getView());
-
-        myPane.getChildren().add(startBlock);
-        myPane.getChildren().add(startButton);
 
         Pipes pipes = new Pipes();
 
@@ -107,6 +105,7 @@ public class StarterApp extends Application {
         });
 
         reset.setOnAction(event -> {
+            graphCanvas.reset();
             ClearOutputs(inputOutput);
             flappy.stop();
             score = 0;
@@ -155,16 +154,12 @@ public class StarterApp extends Application {
 
         HBox controls = new HBox(15, differentiate, jump, reset);
         controls.setPadding(new Insets(12));
-        HBox header = new HBox(12, new Label("Lock in nolan!"));
-        header.setPadding(new Insets(12));
-
         BorderPane rootPane = new BorderPane();
 
 
 
         rootPane.setCenter(myPane);
         rootPane.setTop(controls);
-        //rootPane.setTop(header);
         rootPane.setBottom(status);
         stage.setTitle("Derivative Calculator");
         stage.setScene(new Scene(rootPane, 640, 400));
@@ -176,10 +171,23 @@ public class StarterApp extends Application {
         // TODO 2: Add your first interactive control (button, text field, etc.).
         Button actionButton = new Button("Tap to update status");
         actionButton.setOnAction(event -> {
-            statusLabel.setText("Your team has launched the shared starter.");
+            statusLabel.setText("You have launched Wolphram Beta™."); //r team has launched the shared starter.");
         });
         //GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
+        //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        HBox comboWGraph = new HBox(inputOutput,graphCanvas);
+        myPane.getChildren().add(comboWGraph);
+        myPane.getChildren().add(bird.getView());
+        myPane.getChildren().add(startBlock);
+        myPane.getChildren().add(startButton);
+
+        // Some tests.
+        /*Point2D[] points = new Point2D[3];
+        points[0] = new Point2D(400, 400);
+        points[1] = new Point2D(605, 605);
+        points[2] = new Point2D(400, 700);
+        graphCanvas.tempPlotName(points);*/
         //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
         /*
@@ -211,10 +219,10 @@ public class StarterApp extends Application {
 
         Differentiable dydx = Objects.requireNonNull(classify(parsed)).derivative();
         ArrayList<Point2D> points = new ArrayList<>();
-        for (double x = 0; x < graphCanvas.getWidth(); x += .1)
+        for (double x = 0; x < graphCanvas.getWidth(); x += 0.1)
         {
-            double y = -1 * dydx.eval(x-graphCanvas.getWidth()/2) + graphCanvas.getHeight()/2;
-            Point2D newPoint = new Point2D(x,y);
+            double y = -0.05*graphCanvas.getHeight()*dydx.eval((20*x-10*graphCanvas.getWidth())/graphCanvas.getWidth()) + graphCanvas.getHeight()/2;
+            Point2D newPoint = new Point2D(x-2.5,y-2.5);
             points.add(newPoint);
         }
         Point2D[] convertedPs = new Point2D[points.size()];

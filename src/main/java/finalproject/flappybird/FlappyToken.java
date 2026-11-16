@@ -1,12 +1,16 @@
 package finalproject.flappybird;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import org.w3c.dom.css.Rect;
+
+import java.io.FileNotFoundException;
 
 /** Owns the visual token, its local rotation pivot, and position. */
 public class FlappyToken {
@@ -14,10 +18,32 @@ public class FlappyToken {
     public double yVel = 0;
 
     public FlappyToken() {
-        Image image = new Image(FlappyToken.class.getResource("/images/FireflyFlappy.png").toExternalForm());
-        ImageView drone = new ImageView(image);
-        drone.setFitWidth(90);
-        drone.setPreserveRatio(true);
+        Image image = null;
+        Node drone;
+        System.out.println("loading image 3");
+        try {
+            System.out.println("loading image 4");
+            image = new Image(FlappyToken.class.getResource("/images/FireflyFlappy.png").toExternalForm());
+            System.out.println("loading image 5");
+            if (image == null) {
+                System.out.println("found null image exception");
+                throw new IllegalArgumentException("Image not found null exception");
+            }
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        if (image != null) {
+            drone = new ImageView(image);
+            ((ImageView)drone).setFitWidth(90);
+            ((ImageView)drone).setPreserveRatio(true);
+        }
+        else {
+            javafx.scene.shape.Rectangle fallback = new Rectangle(0, 0, 90, 90);
+            fallback.setFill(Color.GREY);
+            drone = fallback;
+        }
         view = new Group(drone);
         reset();
     }
@@ -32,17 +58,7 @@ public class FlappyToken {
         if (yVel > -6) {
             yVel -= .1;
         }
-        //keepInside(playWidth);
     }
-
-
-    public void keepInArena(double width, double height) {
-        if (view.getBoundsInParent().getMaxY() > height)
-            view.setTranslateY(view.getTranslateY() - (view.getBoundsInParent().getMaxY() - height));
-        if (view.getBoundsInParent().getMinY() < 0)
-            view.setTranslateY(view.getTranslateY() - view.getBoundsInParent().getMinY());
-    }
-
     public void reset() {
         view.setTranslateX(180);
         view.setTranslateY(160);
