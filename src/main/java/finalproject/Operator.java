@@ -2,7 +2,6 @@ package finalproject;
 
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.regex.*;
 
 public class Operator implements Differentiable {
     public Differentiable input1;
