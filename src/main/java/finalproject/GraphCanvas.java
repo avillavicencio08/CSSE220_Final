@@ -55,6 +55,7 @@ public class GraphCanvas extends Canvas {
             System.out.println("Error: Bounds Check (on the Graph space)!!!");
             return;
         }
+        System.out.println("graphing");
         if (x1 > x2) {
             double tempX = x1;
             double tempY = y1;

@@ -67,8 +67,15 @@ public class StarterApp extends Application {
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
 
+        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        //graphCanvas.drawLine(20, 30, 40, 50);
+        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+
+        HBox combine = new HBox(inputOutput,graphCanvas);
+        //combine.setPadding(new Insets(12));
+
         differentiate.setOnAction(event -> {
-            String output = Differentiate(textField.getText());
+            String output = Differentiate(textField.getText(),graphCanvas);
             System.out.println("calculated and found " + output);
             DisplayOutput(output,inputOutput);
         });
@@ -77,7 +84,7 @@ public class StarterApp extends Application {
         sky.setFill(Color.WHITESMOKE);
         Button startButton = new Button("Start");
 
-        Pane myPane = new Pane(sky, ground,inputOutput);
+        Pane myPane = new Pane(sky, ground,combine);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
         myPane.setPrefSize(500, 300);
@@ -170,16 +177,17 @@ public class StarterApp extends Application {
         actionButton.setOnAction(event -> {
             statusLabel.setText("Your team has launched the shared starter.");
         });
-        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        //GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
-        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
-
+        /*
         Point2D[] points = new finalproject.Point2D[3];
         points[0] = new finalproject.Point2D(100, 100);
         points[1] = new finalproject.Point2D(205, 205);
         points[2] = new finalproject.Point2D(300, 800);
-        graphCanvas.tempPlotName(points);
+        */
+
 
         // TODO 3: Arrange the title, message, and control in a clean layout.
         VBox root = new VBox(12, titleLabel, statusLabel, actionButton, graphCanvas);//, webView);
@@ -195,12 +203,25 @@ public class StarterApp extends Application {
 
     }
 
-    public String Differentiate(String input)
+    public String Differentiate(String input,GraphCanvas graphCanvas)
     {
         String fn = input.replaceAll("\\s+", "");
         ArrayList<?> parsed = Parser.funcParse(fn.toLowerCase());
 
         Differentiable dydx = Objects.requireNonNull(classify(parsed)).derivative();
+        ArrayList<Point2D> points = new ArrayList<>();
+        for (double x = -100; x < 100; x += .05)
+        {
+            double y = dydx.eval(x);
+            Point2D newPoint = new Point2D(x,y);
+            points.add(newPoint);
+        }
+        Point2D[] convertedPs = new Point2D[points.size()];
+        for (int i = 0; i < points.size(); i++)
+        {
+            convertedPs[i] = points.get(i);
+        }
+        graphCanvas.tempPlotName(convertedPs);
 
         return dydx.toString();
     }
