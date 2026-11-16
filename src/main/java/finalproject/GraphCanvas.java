@@ -9,11 +9,14 @@ import javafx.scene.canvas.GraphicsContext;
  * Some pages I used were found after clicking 2-5 links from the above link.
  */
 public class GraphCanvas extends Canvas {
-    private GraphicsContext ctx;
+    private Dims dims;
     private Color lineColor;
+    private GraphicsContext ctx;
 
-    public GraphCanvas(Color lineColor) {
-        super(1000, 1000);
+    public GraphCanvas(Dims dims, Color lineColor) {
+        super(dims.width, dims.height);
+        this.dims = dims;
+        //super(1000, 1000);
         ctx = this.getGraphicsContext2D();
         this.lineColor = lineColor;
 

@@ -66,8 +66,9 @@ public class StarterApp extends Application {
 
         VBox inputOutput = new VBox(textField,fillerDisp);
         inputOutput.setPadding(new Insets(12));
+        Dims graphDims = new Dims(300, 300);
 
-        GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
+        GraphCanvas graphCanvas = new GraphCanvas(graphDims, Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
         //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
 
@@ -88,6 +89,7 @@ public class StarterApp extends Application {
         myPane.getChildren().add(combine);
         myPane.setFocusTraversable(true);
         myPane.setOnMouseClicked(event -> myPane.requestFocus());
+        // TODO: Change graphDims accordingly every time the screen changes size.
         myPane.setPrefSize(500, 300);
         myPane.setMinSize(500, 300);
         myPane.setMaxSize(1800, 1000); //we need for flappybird
@@ -103,6 +105,7 @@ public class StarterApp extends Application {
         });
 
         reset.setOnAction(event -> {
+            graphCanvas.reset();
             ClearOutputs(inputOutput);
             flappy.stop();
             score = 0;
@@ -176,7 +179,7 @@ public class StarterApp extends Application {
         });
         //GraphCanvas graphCanvas = new GraphCanvas(Color.RED);
         //graphCanvas.drawLine(20, 30, 40, 50);
-        graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
+        //graphCanvas.drawLine(new finalproject.Point2D(20, 30), new finalproject.Point2D(40, 50));
         HBox comboWGraph = new HBox(inputOutput,graphCanvas);
         myPane.getChildren().add(comboWGraph);
         myPane.getChildren().add(bird.getView());
