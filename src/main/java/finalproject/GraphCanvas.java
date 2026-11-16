@@ -90,8 +90,7 @@ public class GraphCanvas extends Canvas {
 
     public void plot(Point2D[] points) {
         // TODO: check the bounds with the border of the GraphCanvas.
-        for(int i = 0; points.length > i; ++i) {
-            Point2D point = points[i];
+        for (Point2D point : points) {
             this.ctx.fillRect(point.x, point.y, 5, 5);
         }
     }
@@ -104,10 +103,4 @@ public class GraphCanvas extends Canvas {
             this.drawLine(start, end);
         }
     }
-
-    public Double eval(Differentiable o, Double x) {
-        return o.eval(x);
-    }
-
-    //public void regression
 }
