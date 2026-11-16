@@ -48,13 +48,17 @@ public class GraphCanvas extends Canvas {
     }
 
     public void drawLine(Point2D p1, Point2D p2) {
-        double x1 = p1.x;
-        double y1 = p1.y;
-        double x2 = p2.x;
-        double y2 = p2.y;
+        double x1 = p1.x + (this.getWidth() / 2);
+        double y1 = p1.y + (this.getHeight() / 2);
+        double x2 = p2.x + (this.getWidth() / 2);
+        double y2 = p2.y + (this.getHeight() / 2);
 
         // TODO: Clip the region we are graphing.
         if((x1 < 0) || (x1 > this.getWidth()) || (y1 < 0) || (y1 > this.getWidth()) || (x2 < 0) || (x2 > this.getHeight()) || (y2 < 0) || (y2 > this.getHeight())) {
+            System.out.println("x1: " + Double.toString(x1));
+            System.out.println("y1: " + Double.toString(y1));
+            System.out.println("x2: " + Double.toString(x2));
+            System.out.println("y2: " + Double.toString(y2));
             System.out.println("Error: Bounds Check (on the Graph space)!!!");
             return;
         }
